@@ -1,33 +1,60 @@
+"use client"
+// import { Globe } from '@/components/ui/globe'
+import { Input } from '@/components/Input';
+import { SpinningGlobe } from '@/components/SpinningGlobe';
+// import { GlobeDemo } from '@/components/world';
 import Image from 'next/image'
 import Link from 'next/link'
 import{FaExclamationTriangle} from 'react-icons/fa'
+import { motion } from "framer-motion";
+import { BackgroundBeams } from '@/components/ui/background-beams';
 
 export default function Home() {
+
+
   return (
     <div className="">
 
-<div className="overflow-visible w-full h-full pb-40  ">
 
 
-{/* <Spotlight className=" pl-50 ml-10 overflow-visible"/> */}
-<div className="  w-screen 
-px-2 py-10 ">  
+{/* <Input/> */}
+<BackgroundBeams />
 
-<div className="
- bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text tracking-tight text-transparent md:text-7x
+<SpinningGlobe/>
 
-ml-10 mt-20 text-6xl md:text-7xl sm:text-6xl xs:text-2xl  mx-auto font-normal text-left text-neutral-200">
 
-  Nest <br />
-  No place like home..
- 
+
+<motion.div
+          initial={{
+            opacity: 0,
+            y: 20,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 1,
+          }}
+          className="div"
+        >
+      <div className="absolute w-full bottom-0 inset-x-0 h-80 bg-gradient-to-b pointer-events-none select-none from-transparent to-black" />
+      <div className="flex flex-col items-center justify-center absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent to-black" >
+
+{/* <div className="mb-20 h-10 w-500 mx-auto p-4 flex flex-col items-center justify-center"> */}
+
+
+
+   <Input/>
+          <p className="text-center  w-full text-sm md:text-sm font-normal text-neutral-700 dark:text-neutral-200 max-w-md  ">
+            Enter your zipcode to find homes away from home
+          </p>
 </div>
-<StillUnderConstruction/>
+        </motion.div>
+
 </div>
 
-  </div>
    
-    </div>
   )
 }
 
