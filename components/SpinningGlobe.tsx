@@ -400,34 +400,9 @@ export function SpinningGlobe() {
     <div className=" items-center justify-center  ">
  
     <div className="w-full min-h-screen  flex flex-col items-center justify-center">       
-         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 1,
-          }}
-          className="div"
-        >
-          <h2 className="bg-gradient-to-br from-slate-200 to-slate-400 py-4 bg-clip-text tracking-tight text-transparent md:text-7x
-
- mt-10   mx-auto  text-center  text-5xl md:text-6xl sm:text-5xl xs:text-4xl">
-            No place like home...kinda
-          </h2>
-
-
-{/* 
-   <Input/>
-          <p className="text-center text-sm md:text-sm font-normal text-neutral-700 dark:text-neutral-200 max-w-md mt-2 mx-auto">
-            Enter your zipcode to find homes away from home
-          </p> */}
-        </motion.div>
-        <div className="w-full  h-[90vh] flex items-center justify-center">
+        
+        <div className="w-full  h-[70vh] flex items-center justify-center">
+            
       <World data={sampleArcs} globeConfig={globeConfig} />
 
   

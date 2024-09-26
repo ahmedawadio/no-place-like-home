@@ -218,10 +218,10 @@ export function PlaceholdersAndVanishInput({
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-gray-300 h-4 w-4"
+          className="text-gray-300 h-6 w-6"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <motion.path

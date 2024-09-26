@@ -36,7 +36,7 @@ export function Input() {
     console.log("submitted");
   };
   return (
-    <div className=" my-3 w-full  justify-center  ">
+    <div className=" my-2 w-full  justify-center  ">
 
       <PlaceholdersAndVanishInput
         placeholders={placeholders}

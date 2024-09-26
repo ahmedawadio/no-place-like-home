@@ -8,6 +8,7 @@ import Link from 'next/link'
 import{FaExclamationTriangle} from 'react-icons/fa'
 import { motion } from "framer-motion";
 import { BackgroundBeams } from '@/components/ui/background-beams';
+import { HeroTitle } from '@/components/HeroTitle';
 
 export default function Home() {
 
@@ -19,6 +20,7 @@ export default function Home() {
 
 {/* <Input/> */}
 <BackgroundBeams />
+<HeroTitle/>
 
 <SpinningGlobe/>
 
@@ -38,15 +40,16 @@ export default function Home() {
           }}
           className="div"
         >
-      <div className="absolute w-full bottom-0 inset-x-0 h-80 bg-gradient-to-b pointer-events-none select-none from-transparent to-black" />
-      <div className="flex flex-col items-center justify-center absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent to-black" >
+
+      <div className="absolute w-full bottom-0 inset-x-0 h-80 bg-gradient-to-b  from-transparent to-black" />
+      <div className="flex flex-col items-center justify-center absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b  from-transparent to-black" >
 
 {/* <div className="mb-20 h-10 w-500 mx-auto p-4 flex flex-col items-center justify-center"> */}
 
+             <Input/>
 
 
-   <Input/>
-          <p className="text-center  w-full text-sm md:text-sm font-normal text-neutral-700 dark:text-neutral-200 max-w-md  ">
+          <p className="text-center  w-full text-md font-normal text-neutral-400 dark:text-neutral-100 max-w-md  ">
             Enter your zipcode to find homes away from home
           </p>
 </div>
