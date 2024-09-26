@@ -18,25 +18,25 @@ export default function Home() {
 
   const loadingStates = [
     {
-      text: "Querying backend",
+      text: "Conencting to API",
     },
     {
-      text: "Running ML model",
+      text: "Querying Database",
     },
     {
-      text: "Finding home cluster",
+      text: "Running Model",
     },
     {
-      text: "Organizing results",
+      text: "Analyzing Results",
     },
     {
-      text: "Clicking heels 3 times",
+      text: "Clicking Heels 3x",
     },
     {
-      text: "Grabbing coffee",
+      text: "Grabbing Coffee",
     },
     {
-      text: "Sending results",
+      text: "Generating Report",
     },
   ];
   
