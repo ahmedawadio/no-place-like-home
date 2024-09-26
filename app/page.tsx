@@ -12,6 +12,7 @@ import { HeroTitle } from '@/components/HeroTitle';
 import { LoaderOverlay } from '@/components/LoaderOverlay';
 import { useState } from 'react';
 import { MultiStepLoader } from '@/components/ui/multi-step-loader';
+import { Header } from '@/components/ui/Header';
 
 export default function Home() {
 
@@ -49,9 +50,10 @@ export default function Home() {
   return (
     <div className="">
 
-{/* <div className="pacifico-regular mt-10 ml-10 text-2xl absolute text-white text-opacity-20">
-  <p className="custom-text-outline">Nest</p>
-</div> */}
+
+
+
+
 
 
 
@@ -79,6 +81,7 @@ export default function Home() {
 {!isSubmitted && 
 
 <>
+<Header/>
 
 <div className="absolute z-10">
 
@@ -131,6 +134,9 @@ export default function Home() {
 </>
 
 }
+
+
+
 </div>
 
    

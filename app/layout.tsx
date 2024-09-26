@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Nest: No place like home Next App',
+  title: 'Nest ML',
   description: 'There is no place like home...kinda',
 }
 
@@ -21,6 +21,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <link rel="shortcut icon" href="/favicon.ico" />
+        
       <body className={inter.className}>{children}</body>
     </html>
   )
