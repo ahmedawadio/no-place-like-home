@@ -58,7 +58,7 @@ const LoaderCore = ({
             className={cn("text-left flex gap-2 mb-4")}
             initial={{ opacity: 0, y: -(value * 40) }}
             animate={{ opacity: opacity, y: -(value * 40) }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 1}}
           >
             <div>
               {index > value && (

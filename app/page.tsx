@@ -69,7 +69,7 @@ export default function Home() {
     alt="That's All Folks"
     className="max-w-full max-h-full object-contain"
   />
-  <p className="absolute bottom-20 text-white text-5xl font-bold">🐷 lol</p>
+  <p className="absolute bottom-20 text-white text-5xl font-bold">🐷 still woring on the rest lol</p>
   </div>
   }
 <div className="absolute z-10">
