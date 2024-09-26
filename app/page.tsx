@@ -9,7 +9,7 @@ import{FaExclamationTriangle} from 'react-icons/fa'
 import { motion } from "framer-motion";
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { HeroTitle } from '@/components/HeroTitle';
-import { LoaderOverlay } from '@/components/LoaderOverlay';
+// import { LoaderOverlay } from '@/components/LoaderOverlay';
 import { useState } from 'react';
 import { MultiStepLoader } from '@/components/ui/multi-step-loader';
 import { Header } from '@/components/ui/Header';

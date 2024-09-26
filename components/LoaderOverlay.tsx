@@ -35,7 +35,9 @@ export function LoaderOverlay() {
   return (
     <div className="w-full h-[60vh] flex items-center justify-center">
       {/* Core Loader Modal */}
-      <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
+      <Loader loadingStates={loadingStates} loading={loading} duration={2000} setIsLoading={function (value: boolean): void {
+        throw new Error("Function not implemented.");
+      } } />
 
       {/* The buttons are for demo only, remove it in your actual code ⬇️ */}
       <button
