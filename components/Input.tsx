@@ -4,8 +4,8 @@ import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 
 
 interface InputProps {
-  setIsLoading: () => void; // setIsLoading passed as prop
-  setIsSubmitted: () => void;
+  setIsLoading: (loading: boolean) => void; // A function that accepts a boolean
+  setIsSubmitted: (submitted: boolean) => void; // A function that accepts a boolean
 }
 
 export function Input({ setIsLoading, setIsSubmitted}: InputProps) {
