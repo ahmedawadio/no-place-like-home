@@ -2,8 +2,14 @@
 
 import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 
-export function Input() {
-    const placeholders = [
+
+interface InputProps {
+  setIsLoading: (loading: boolean) => void; // setIsLoading passed as prop
+  setIsSubmitted: (submit: boolean) => void;
+}
+
+export function Input({ setIsLoading, setIsSubmitted}: InputProps) {
+  const placeholders = [
         "10001 (New York City, NY)",
         "90001 (Los Angeles, CA)",
         "60601 (Chicago, IL)",
@@ -33,8 +39,13 @@ export function Input() {
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
+    setIsSubmitted(true)
     console.log("submitted");
+
+  
   };
+
   return (
     <div className=" my-2 w-full  justify-center  ">
 
