@@ -45,13 +45,13 @@ export default function Home() {
 
   const duration = 2000
 
-  const [locationData, setLocationData] = useState(null);
+  const [locationData, setLocationData] = useState("");
   useEffect(() => {
     // Fetch data from the Flask API
     const fetchLocationData = async () => {
       try {
-        const response = await fetch("/api/location");
-        const data = await response.json();
+        const response = await fetch("/api/python");
+        const data = await response.text();
         console.log({data})
         setLocationData(data); // Set the response data into state
       } catch (error) {
