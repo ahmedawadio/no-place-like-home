@@ -9,8 +9,8 @@ def hello_world():
 
 
 
-# @app.route("/api/location")
-# def location():
-#     location_data = get_location()
-#     return jsonify(location_data)
+@app.route("/api/location")
+def location():
+    location_data = get_location()
+    return jsonify(location_data)
 
