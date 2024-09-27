@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { HeroTitle } from '@/components/HeroTitle';
 // import { LoaderOverlay } from '@/components/LoaderOverlay';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MultiStepLoader } from '@/components/ui/multi-step-loader';
 import { Header } from '@/components/ui/Header';
 
@@ -44,7 +44,28 @@ export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const duration = 2000
+
+  const [locationData, setLocationData] = useState(null);
+  useEffect(() => {
+    // Fetch data from the Flask API
+    const fetchLocationData = async () => {
+      try {
+        const response = await fetch("/api/location");
+        const data = await response.json();
+        console.log({data})
+        setLocationData(data); // Set the response data into state
+      } catch (error) {
+        
+        console.error({error});
+      }
+    };
+
+    fetchLocationData();
+  }, []); // Empty dependency array ensures this runs only once after the component mounts
+
+
   
+// console.log({"NOW":locationData})
 
   
   return (
@@ -57,8 +78,10 @@ export default function Home() {
 
 
 
+
 {isSubmitted &&
 <>
+
   {
 
     !isLoading &&
@@ -127,7 +150,7 @@ export default function Home() {
 
 
           <p className="text-center  w-full text-md font-normal text-neutral-400 dark:text-neutral-100 max-w-md  ">
-            Enter your zipcode to find homes away from home
+            Enter your zipcode to find homes away from home <br/>{locationData}
           </p>
 </div>
 </motion.div>
