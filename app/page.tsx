@@ -50,7 +50,7 @@ export default function Home() {
     // Fetch data from the Flask API
     const fetchLocationData = async () => {
       try {
-        const response = await fetch("/api/python");
+        const response = await fetch("/api/location");
         const data = await response.text();
         console.log({data})
         setLocationData(data); // Set the response data into state

@@ -14,5 +14,3 @@ def get_location():
         return location
     return "Not found"
 
-# def get_location():
-#     return "bla"
