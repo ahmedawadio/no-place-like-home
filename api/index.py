@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-# from database import get_location
+from database import get_location
 
 app = Flask(__name__)
 
