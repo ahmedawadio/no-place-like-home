@@ -38,3 +38,4 @@ __pycache__
 # analysis files
 *.csv
 *.xlsx
+*.log
