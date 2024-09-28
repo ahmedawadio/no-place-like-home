@@ -36,5 +36,5 @@ next-env.d.ts
 __pycache__
 
 # analysis files
-.csv
-.xlsx
+*.csv
+*.xlsx
