@@ -5,7 +5,6 @@ supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 response = supabase.table("example").select("*").execute()
 
 def get_location():
-
     # Check if data exists in the response
     if response.data and len(response.data) > 0:
         # Extract the first row and the 'location' column value
