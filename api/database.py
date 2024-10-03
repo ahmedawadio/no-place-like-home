@@ -257,7 +257,7 @@ def confirm_tables_created():
 
 
    
-insert_into_tables()
+# insert_into_tables()
 
 # confirm_tables_created()
 
