@@ -1,7 +1,7 @@
 # import pandas as pd
 # import re
 
-# df = pd.read_csv("api/analysis/data/query.csv",dtype={'cid': str})
+# df = pd.read_csv("api/analysis/data/query.csv",dtype={'mid': str})
 
 # df= df.dropna()
 
@@ -68,7 +68,7 @@ warnings.filterwarnings("ignore", category=ConvergenceWarning)  # Suppress Conve
 # -------------------------
 
 def plot_row_column_thresholds(df):
-    # Load the CSV file with 'cid' as string
+    # Load the CSV file with 'mid' as string
     df.replace(['', 'None', None, '-888888888'], pd.NA, inplace=True)
 
     # Calculate invalid percentages
@@ -86,9 +86,9 @@ def plot_row_column_thresholds(df):
         # Filter out columns with high invalid percentages
         cols_to_keep = invalid_percentages[invalid_percentages <= threshold_percentage / 100].index.tolist()
 
-        # Ensure 'cid' is included
-        if 'cid' not in cols_to_keep:
-            cols_to_keep.insert(0, 'cid')
+        # Ensure 'mid' is included
+        if 'mid' not in cols_to_keep:
+            cols_to_keep.insert(0, 'mid')
 
         # Filter the DataFrame to only keep columns with valid percentages
         temp_df = temp_df[cols_to_keep]
@@ -115,7 +115,7 @@ def plot_row_column_thresholds(df):
 
 
 def shape_threshold(df,threshold_percentage):
-    # Load the CSV file with 'cid' as string
+    # Load the CSV file with 'mid' as string
     df.replace(['', 'None', None, '-888888888'], pd.NA, inplace=True)
 
     # Calculate invalid percentages
@@ -126,9 +126,9 @@ def shape_threshold(df,threshold_percentage):
     # Filter out columns with high invalid percentages
     cols_to_keep = invalid_percentages[invalid_percentages <= threshold_percentage / 100].index.tolist()
 
-    # Ensure 'cid' is included
-    if 'cid' not in cols_to_keep:
-        cols_to_keep.insert(0, 'cid')
+    # Ensure 'mid' is included
+    if 'mid' not in cols_to_keep:
+        cols_to_keep.insert(0, 'mid')
 
     # Filter the DataFrame to only keep columns with valid percentages
     temp_df = temp_df[cols_to_keep]
@@ -136,10 +136,10 @@ def shape_threshold(df,threshold_percentage):
     # Drop rows with NaN values
     temp_df = temp_df.dropna()
 
-    # Remove any columns that are not of type float or int, excluding 'cid'
+    # Remove any columns that are not of type float or int, excluding 'mid'
     numeric_cols = temp_df.select_dtypes(include=['float64', 'int64']).columns.tolist()
-    if 'cid' in temp_df.columns:
-        numeric_cols.insert(0, 'cid')  # Ensure 'cid' stays in the DataFrame
+    if 'mid' in temp_df.columns:
+        numeric_cols.insert(0, 'mid')  # Ensure 'mid' stays in the DataFrame
     temp_df = temp_df[numeric_cols]
 
     return temp_df
@@ -148,8 +148,8 @@ def shape_threshold(df,threshold_percentage):
 filepath  = "api/analysis/data/query.csv"
 
 
-# Load the CSV file with 'cid' as string
-df = pd.read_csv(filepath, dtype={'cid': str}, low_memory=False)
+# Load the CSV file with 'mid' as string
+df = pd.read_csv(filepath, dtype={'mid': str}, low_memory=False)
 df.replace(['', 'None', None, '-888888888'], pd.NA, inplace=True)
 
 # Checking the tradeoff of rows / columns to drop based on threshold. Goal is to keep more more rows to ahve more ciities in model
@@ -163,8 +163,8 @@ df = shape_threshold(df, chosen_threshold)
 # print("First few rows of the cleaned DataFrame:")
 # print(df.head())
 
-# # Exclude 'cid' column for analysis
-features = df.drop('cid', axis=1)
+# # Exclude 'mid' column for analysis
+features = df.drop('mid', axis=1)
 
 # # # Display feature names
 # # print("\nFeature columns:")

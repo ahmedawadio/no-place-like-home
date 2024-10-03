@@ -32,7 +32,7 @@ cbsa_cleaned_df = cbsa_cleaned_df.drop_duplicates(subset='CBSA Code')
 final_cbsa_df = pd.DataFrame()
 final_cbsa_df["cid"] = cbsa_cleaned_df["CBSA Code"]
 final_cbsa_df["name"] = cbsa_cleaned_df["CBSA Title"]
-final_cbsa_df["type"] = cbsa_cleaned_df["Metropolitan/Micropolitan Statistical Area"]
+# final_cbsa_df["type"] = cbsa_cleaned_df["Metropolitan/Micropolitan Statistical Area"]
 
 final_cbsa_df.to_csv("api/analysis//data/cbsa.csv", index=False)
 # Display the first few rows of the cleaned DataFrame to confirm it worked correctly
@@ -62,6 +62,11 @@ zip_city_cbsa_df_cleaned = zip_city_cbsa_df[['ZIP', 'CBSA','USPS_ZIP_PREF_CITY',
 
 zip_city_cbsa_df_cleaned = zip_city_cbsa_df_cleaned.drop_duplicates(subset='ZIP')
 
+#Puerto Rico is not included in model
+zip_city_cbsa_df_cleaned = zip_city_cbsa_df_cleaned[zip_city_cbsa_df_cleaned['USPS_ZIP_PREF_STATE'] != 'PR']
+
+#99999 is a false zipcode and is often used as placeholder, I belive similar is true for CBSA Any row with this value is removed
+zip_city_cbsa_df_cleaned = zip_city_cbsa_df_cleaned[zip_city_cbsa_df_cleaned['CBSA'] != '99999']
 
 # Cleaning text formating. Making copy to avoid returning-a-view-versus-a-copy warning
 zip_city_cbsa_df_cleaned = zip_city_cbsa_df_cleaned.copy()
@@ -69,9 +74,11 @@ zip_city_cbsa_df_cleaned['USPS_ZIP_PREF_CITY'] = zip_city_cbsa_df['USPS_ZIP_PREF
 
 
 final_zipcode_df = pd.DataFrame()
-final_zipcode_df["zid"] = zip_city_cbsa_df_cleaned["ZIP"]
+final_zipcode_df["zipcode"] = zip_city_cbsa_df_cleaned["ZIP"]
 final_zipcode_df["city"] = zip_city_cbsa_df_cleaned["USPS_ZIP_PREF_CITY"]
 final_zipcode_df["state"] = zip_city_cbsa_df_cleaned["USPS_ZIP_PREF_STATE"]
+final_zipcode_df["mid"] = zip_city_cbsa_df_cleaned["CBSA"]
 
-final_zipcode_df.to_csv("api/analysis/data/zipcode.csv", index=False)
+
+final_zipcode_df.to_csv("api/analysis/data/zipcodes.csv", index=False)
 # print(final_zipcode_df.head())

@@ -42,6 +42,7 @@ def get_census_variables_for_1_year(year):
         # Filter the dictionary to only include keys that contain underscores because those are the non geographic variable names (ie, state names. geography ids, state numbers)
         variable_dict = {k: v for k, v in variable_dict.items() if "_" in k}
         
+        # variable_dict["NAME"] = "Geography Name"
         return variable_dict
 
     except requests.exceptions.RequestException as e:
