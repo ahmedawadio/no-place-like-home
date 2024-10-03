@@ -10,16 +10,47 @@ import os
 
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
-def get_location():
-    response = supabase.table("example").select("*").execute()
+def get_location(zipcode):
+    """
+    - variables
+    - metros
+    - zipcodes
+    - metro_metrics
+    - similar_metros
+    """
 
-    # Check if data exists in the response
-    if response.data and len(response.data) > 0:
-        # Extract the first row and the 'location' column value
-        first_row = response.data[0]  # Get the first row
-        location = first_row.get('location')  # Get the 'location' column value
-        return location
-    return "Not found"
+    
+    zipcode_mid = str(supabase.table("zipcodes").select("mid").eq("zipcode", zipcode).execute().data[0]["mid"])
+
+    similar_mids_string = supabase.table("similar_metros").select("similar_mid").eq("mid","14020").execute().data[0]['similar_mid']
+    similar_mids_list = similar_mids_string.split(',')
+
+    zipcode_mid_metrics = supabase.table("metro_metrics").select("*").eq("mid",zipcode_mid).execute().data
+    similar_metro_metrics = []
+
+    for mid in similar_mids_list:
+        similar_metro_metrics.append(supabase.table("metro_metrics").select("*").eq("mid",mid).execute().data)
+
+
+    output = {
+            "zipcode_mid_metrics": zipcode_mid_metrics,
+            "similar_metro_metrics": similar_metro_metrics
+        }
+    return output
+
+
+
+print(get_location("47404"))
+# def get_location():
+#     response = supabase.table("example").select("*").execute()
+
+#     # Check if data exists in the response
+#     if response.data and len(response.data) > 0:
+#         # Extract the first row and the 'location' column value
+#         first_row = response.data[0]  # Get the first row
+#         location = first_row.get('location')  # Get the 'location' column value
+#         return location
+#     return "Not found"
 
 
 def insert_into_tables():

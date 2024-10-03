@@ -12,9 +12,11 @@ def hello_world():
     return "Hello, World!"
 
 
-@app.route("/api/location")
+
+
+@app.route("/api/location/<string:zipcode>", methods=["GET"])
 def location(zipcode):
-    location_data = get_location()
+    location_data = get_location(zipcode)
     return jsonify(location_data)
 
 # @app.route("/api/location/<string:zipcode>", methods=["GET"])
