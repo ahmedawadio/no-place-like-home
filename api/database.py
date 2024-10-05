@@ -8,6 +8,7 @@ import pandas as pd
 import os
 
 
+
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
 def get_location(zipcode):
@@ -18,29 +19,55 @@ def get_location(zipcode):
     - metro_metrics
     - similar_metros
     """
-
+    has_error = False
     
-    zipcode_mid = str(supabase.table("zipcodes").select("mid").eq("zipcode", zipcode).execute().data[0]["mid"])
+    try:
+        zipcode_details = supabase.table("zipcodes").select("*").eq("zipcode", zipcode).execute().data[0]
+    except:
+        has_error = True
+        all_zipcode = supabase.table("zipcodes").select("zipcode").execute().data
+        zipcode_list = [int(zipcode['zipcode']) for zipcode in all_zipcode]
+        closest_zipcode = min(zipcode_list, key=lambda x: abs(x - int(zipcode)))
+        zipcode_details = supabase.table("zipcodes").select("*").eq("zipcode", closest_zipcode).execute().data[0]
+
+
+    del zipcode_details['creation_date']
+
+    zipcode_mid =  zipcode_details["mid"]
+
 
     similar_mids_string = supabase.table("similar_metros").select("similar_mid").eq("mid","14020").execute().data[0]['similar_mid']
-    similar_mids_list = similar_mids_string.split(',')
+    mids_list = [zipcode_mid] +  similar_mids_string.split(',')
 
-    zipcode_mid_metrics = supabase.table("metro_metrics").select("*").eq("mid",zipcode_mid).execute().data
-    similar_metro_metrics = []
+    metro_metrics = [zipcode_mid]
+    metro_details = []
 
-    for mid in similar_mids_list:
-        similar_metro_metrics.append(supabase.table("metro_metrics").select("*").eq("mid",mid).execute().data)
+    for mid in mids_list:
+        metro_metric = supabase.table("metro_metrics").select("*").eq("mid",mid).execute().data
+        metros_details = supabase.table("metros").select("*").eq("mid",mid).execute().data
+
+        for metric in metro_metric:
+            del metric['creation_date']
+
+        for metro in metro_details:
+            print(metro[0]["creation_date"])
+            # del metro['creation_date']
+
+        metro_metrics.append(metro_metric)
+        metro_details.append(metros_details)
 
 
     output = {
-            "zipcode_mid_metrics": zipcode_mid_metrics,
-            "similar_metro_metrics": similar_metro_metrics
+            "has_error": has_error,
+            "initial_zipcode": zipcode,
+            "zipcode": zipcode_details,
+            "metro_details": metro_details,
+            "metro_metrics": metro_metrics
         }
     return output
 
 
-
-print(get_location("47404"))
+# print(get_location("47404"))
 # def get_location():
 #     response = supabase.table("example").select("*").execute()
 
@@ -287,8 +314,8 @@ def confirm_tables_created():
         return False
 
 
-   
-# insert_into_tables()
-
-# confirm_tables_created()
+if __name__ == "__main__":
+    # insert_into_tables()
+    # confirm_tables_created()
+    print(get_location("99999"))
 

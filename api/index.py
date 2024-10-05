@@ -14,10 +14,13 @@ def hello_world():
 
 
 
-@app.route("/api/location/<string:zipcode>", methods=["GET"])
+@app.route("/api/zipcode/<string:zipcode>", methods=["GET"])
 def location(zipcode):
-    location_data = get_location(zipcode)
-    return jsonify(location_data)
+    if len(zipcode) != 5 or not zipcode.isdigit():
+        return jsonify({"error": "Must be a 5-digit zip code."}), 400
+
+    response = jsonify(get_location(zipcode))
+    return response
 
 # @app.route("/api/location/<string:zipcode>", methods=["GET"])
 

@@ -13,6 +13,7 @@ import { HeroTitle } from '@/components/HeroTitle';
 import { useEffect, useState } from 'react';
 import { MultiStepLoader } from '@/components/ui/multi-step-loader';
 import { Header } from '@/components/ui/Header';
+import AnalyticsSection from '@/components/section/AnalyticsSection';
 
 export default function Home() {
 
@@ -20,39 +21,44 @@ export default function Home() {
     {
       text: "Conencting to API",
     },
-    {
-      text: "Querying Database",
-    },
-    {
-      text: "Running Model",
-    },
-    {
-      text: "Analyzing Results",
-    },
-    {
-      text: "Clicking Heels 3x",
-    },
-    {
-      text: "Grabbing Coffee",
-    },
-    {
-      text: "Generating Report",
-    },
+    // {
+    //   text: "Querying Database",
+    // },
+    // {
+    //   text: "Running Model",
+    // },
+    // {
+    //   text: "Analyzing Results",
+    // },
+    // {
+    //   text: "Clicking Heels 3x",
+    // },
+    // {
+    //   text: "Grabbing Coffee",
+    // },
+    // {
+    //   text: "Generating Report",
+    // },
   ];
   
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedInput, setSubmittedInput] = useState("");
+
 
   const duration = 2000
 
-  const [locationData, setLocationData] = useState("");
+  const [locationData, setLocationData] = useState<LocationData | null>(null);
+
   useEffect(() => {
     // Fetch data from the Flask API
+    if (submittedInput) {
+
     const fetchLocationData = async () => {
       try {
-        const response = await fetch("/api/location");
-        const data = await response.text();
-        console.log({data})
+        const response = await fetch(`/api/zipcode/${submittedInput}`);
+        const data = await response.json();
+        console.log(data.has_error)
         setLocationData(data); // Set the response data into state
       } catch (error) {
         
@@ -61,22 +67,15 @@ export default function Home() {
     };
 
     fetchLocationData();
-  }, []); // Empty dependency array ensures this runs only once after the component mounts
+  }
+  }, [submittedInput]);
 
 
   
-// console.log({"NOW":locationData})
 
   
   return (
     <div className="">
-
-
-
-
-
-
-
 
 
 {isSubmitted &&
@@ -85,15 +84,9 @@ export default function Home() {
   {
 
     !isLoading &&
+    <AnalyticsSection  locationData={locationData} setLocationData={setLocationData }/>
 
-<div className="bg-black h-screen w-screen flex items-center justify-center">
-  <img
-    src="https://wallpapers.com/images/hd/that-s-all-folks-dark-theme-fvjibwtktkmmxrhc.jpg"
-    alt="That's All Folks"
-    className="max-w-full max-h-full object-contain"
-  />
-  <p className="absolute bottom-20 text-white text-5xl font-bold">🐷 still working on the rest lol</p>
-  </div>
+
   }
 <div className="absolute z-10">
 
@@ -146,11 +139,12 @@ export default function Home() {
 
 {/* <div className="mb-20 h-10 w-500 mx-auto p-4 flex flex-col items-center justify-center"> */}
 
-             <Input setIsSubmitted={setIsSubmitted} setIsLoading={setIsLoading}/>
+             <Input setSubmittedInput={setSubmittedInput} setIsSubmitted={setIsSubmitted} setIsLoading={setIsLoading}/>
 
 
           <p className="text-center  w-full text-md font-normal text-neutral-400 dark:text-neutral-100 max-w-md  ">
-            Enter your zipcode to find homes away from home <br/>{locationData}
+            Enter your zipcode to find homes away from home <br/>
+            {/* {locationData} */}
           </p>
 </div>
 </motion.div>

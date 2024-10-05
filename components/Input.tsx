@@ -6,9 +6,10 @@ import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 interface InputProps {
   setIsLoading: (loading: boolean) => void; // A function that accepts a boolean
   setIsSubmitted: (submitted: boolean) => void; // A function that accepts a boolean
+  setSubmittedInput: (input: string) => void; // A function that accepts a string
 }
 
-export function Input({ setIsLoading, setIsSubmitted}: InputProps) {
+export function Input({ setSubmittedInput,setIsLoading, setIsSubmitted}: InputProps) {
   const placeholders = [
         "10001 (New York City, NY)",
         "90001 (Los Angeles, CA)",
@@ -35,15 +36,19 @@ export function Input({ setIsLoading, setIsSubmitted}: InputProps) {
       
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true)
     setIsSubmitted(true)
-    console.log("submitted");
+    // console.log("submitted", e);
+    const target = e.target as HTMLFormElement;
+    const inputElement = target.elements[0] as HTMLInputElement; // Assuming your input is the first element in the form
+    console.log("submitted", inputElement.value); // Now you can access the value
+    setSubmittedInput(inputElement.value)
 
-  
   };
 
   return (
