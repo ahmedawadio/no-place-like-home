@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 
 interface Props {
   locationData:LocationData;
-  setLocationData: (location: string) => void; 
+  setLocationData: React.Dispatch<React.SetStateAction<LocationData>>;
 }
 
 
