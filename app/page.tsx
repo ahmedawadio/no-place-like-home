@@ -48,7 +48,19 @@ export default function Home() {
 
   const duration = 2000
 
-  const [locationData, setLocationData] = useState<LocationData | null>(null);
+  const defaultLocationData: LocationData = {
+    has_error: false,
+    initial_zipcode: "",
+    zipcode: {
+      mid: "",
+      zipcode: "",
+      name: "",
+    },
+    metro_details: [[]], 
+    metro_metrics: [], 
+  };
+  
+  const [locationData, setLocationData] = useState<LocationData>(defaultLocationData);
 
   useEffect(() => {
     // Fetch data from the Flask API

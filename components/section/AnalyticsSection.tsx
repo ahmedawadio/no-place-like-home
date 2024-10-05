@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 
 interface Props {
-  locationData:LocationData | null;
+  locationData:LocationData;
   setLocationData: (location: string) => void; 
 }
 
