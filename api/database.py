@@ -36,7 +36,7 @@ def get_location(zipcode):
     zipcode_mid =  zipcode_details["mid"]
 
 
-    similar_mids_string = supabase.table("similar_metros").select("similar_mid").eq("mid","14020").execute().data[0]['similar_mid']
+    similar_mids_string = supabase.table("similar_metros").select("similar_mid").eq("mid",zipcode_mid).execute().data[0]['similar_mid']
     mids_list = [zipcode_mid] +  similar_mids_string.split(',')
 
     metro_metrics = [zipcode_mid]

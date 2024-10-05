@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 
 
 interface Props {
-  locationData:LocationData;
+  locationData:LocationData | null;
   setLocationData: (location: string) => void; 
 }
 
 
 export default function AnalyticsSection({locationData, setLocationData}: Props) {
 
-  console.log("here",locationData.metro_details[0][0]["name"])
+  // console.log("here",locationData.metro_details[0][0]["name"])
   return (
       <div className="bg-black h-screen w-screen flex items-center justify-center">
   <img
