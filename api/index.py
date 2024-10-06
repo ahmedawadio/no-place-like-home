@@ -22,5 +22,3 @@ def location(zipcode):
     response = jsonify(get_location(zipcode))
     return response
 
-# @app.route("/api/location/<string:zipcode>", methods=["GET"])
-

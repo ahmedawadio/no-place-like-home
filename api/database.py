@@ -4,7 +4,6 @@ try: from .keys import SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY
 except: from keys import SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY
 
 from supabase import create_client, Client
-import pandas as pd
 import os
 
 
