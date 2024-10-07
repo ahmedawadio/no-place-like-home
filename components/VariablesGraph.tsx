@@ -154,13 +154,12 @@ export function VariablesGraph({
                   {location}
                 </span>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-lg font-bold leading-none sm:text-3xl">
-                    {valueFormatter(
-                      activeData[
-                        index === 0 ? "metroOneValue" : "selectedMetroValue"
-                      ]
-                    )}
-                  </span>
+                <span className="text-lg font-bold leading-none sm:text-3xl">
+  {valueFormatter(
+    activeData[index === 0 ? "metroOneValue" : "selectedMetroValue"] ?? 0
+  )}
+</span>
+
                   <span className="text-xs text-muted-foreground ml-2">
                     {activeData?.year}
                   </span>
@@ -179,11 +178,11 @@ export function VariablesGraph({
               right: 12,
             }}
             onMouseMove={(state) => {
-              if (state.isTooltipActive) {
-                const activePoint = state.activePayload[0].payload;
-                setActiveData(activePoint);
-              }
-            }}
+                if (state.isTooltipActive && state.activePayload && state.activePayload[0]) {
+                  const activePoint = state.activePayload[0].payload;
+                  setActiveData(activePoint);
+                }
+              }}
             onMouseLeave={() => {
               setActiveData(chartData[chartData.length - 1]);
             }}
@@ -223,7 +222,7 @@ export function VariablesGraph({
                             marginRight: "8px",
                           }}
                         >
-                          {valueFormatter(value)}
+                        {typeof value === "number" ? valueFormatter(value) : value}
                         </span>
                         <span>{config?.label}</span>
                       </div>
