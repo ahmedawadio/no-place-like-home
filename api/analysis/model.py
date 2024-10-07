@@ -289,35 +289,6 @@ feature_names = features.columns.tolist()
 # Call the function to get top 10 sanitized features
 top_sanitized_features = get_top_features_sanitized(scaled_features, cluster_labels, feature_names, top_n=5)
 
-
-#I translated census variables regular english
-variables_dictionary = {
-    #found from top features
-    'DP04_0026PE': 'Percent of housing units built in 1939 or earlier',
-    'DP04_0134E': 'Median rent of occupied units paying rent (dollars)',
-    'DP04_0103PE': 'Percent of housing units without a mortgage with monthly costs less than $250',
-    'DP04_0087E': 'Value of owner-occupied units between $500,000 and $999,999',
-    'DP03_0119PE': 'Percent of families with income below poverty level in the past 12 months',
-    'DP04_0131E': 'Rent of occupied units paying $2,000 to $2,499',
-    'DP04_0132E': 'Rent of occupied units paying $2,500 to $2,999',
-    'DP03_0136PE': 'Percent of people in families with income below poverty level in the past 12 months',
-    'DP05_0023PE': 'Percent of total population aged 62 years and over',
-    'DP04_0065PE': 'Percent of housing units using electricity for heating',
-    
-    # added myself
-    'B01003_001E': 'Total population',
-    'B19013_001E': 'Median household income',
-    'B25077_001E': 'Median home value',
-    'B25064_001E': 'Median gross rent (dollars)',
-    'B23025_005E': 'Number of unemployed individuals',
-    'B15003_022E': 'Number of bachelor’s degrees',
-
-    'B08301_003E': 'Number of solo communters in vehicles',
-    'B27010_018E': 'Number of middle aged adults with health insurance',
-    
-}
-
-
 # print("Top Important Features for KMeans Clusters after Sanitization:")
 # for idx, feature in enumerate(top_sanitized_features, start=1):
 #     print(f"{idx}. {feature}: {variables_dictionary[feature]}  ")
@@ -326,13 +297,114 @@ variables_dictionary = {
 # print(top_sanitized_features)
 
 
+#I translated census variables regular english
+variables_dictionary = {
+    # found from top features
+    'DP04_0026PE': {
+        "name": 'Pre-1939 Housing', 
+        "description": 'Percent of housing units built in 1939 or earlier', 
+        "type": 'percent'
+    },
+    'DP04_0134E': {
+        "name": 'Median Rent', 
+        "description": 'Median rent of occupied units paying rent (dollars)', 
+        "type": 'dollars'
+    },
+    'DP04_0103PE': {
+        "name": 'No Mortgage <$250', 
+        "description": 'Percent of housing units without a mortgage with monthly costs less than $250', 
+        "type": 'percent'
+    },
+    'DP04_0087E': {
+        "name": '$500k-$999k Homes', 
+        "description": 'Value of owner-occupied units between $500,000 and $999,999', 
+        "type": 'count'
+    },
+    'DP03_0119PE': {
+        "name": 'Families Below Poverty', 
+        "description": 'Percent of families with income below poverty level in the past 12 months', 
+        "type": 'percent'
+    },
+    'DP04_0131E': {
+        "name": 'Rent $2k to $2.5k', 
+        "description": 'Rent of occupied units paying $2,000 to $2,499', 
+        "type": 'count'
+    },
+    'DP04_0132E': {
+        "name": 'Rent $2.5k to $3k', 
+        "description": 'Rent of occupied units paying $2,500 to $2,999', 
+        "type": 'count'
+    },
+    'DP03_0136PE': {
+        "name": 'People Below Poverty', 
+        "description": 'Percent of people in families with income below poverty level in the past 12 months', 
+        "type": 'percent'
+    },
+    'DP05_0023PE': {
+        "name": 'Pop Age 62+', 
+        "description": 'Percent of total population aged 62 years and over', 
+        "type": 'percent'
+    },
+    'DP04_0065PE': {
+        "name": 'Electric Heating', 
+        "description": 'Percent of housing units using electricity for heating', 
+        "type": 'percent'
+    },
+
+    # added myself
+    'B01003_001E': {
+        "name": 'Total Population', 
+        "description": 'Total population', 
+        "type": 'count'
+    },
+    'B19013_001E': {
+        "name": 'Median Income', 
+        "description": 'Median household income', 
+        "type": 'dollars'
+    },
+    'B25077_001E': {
+        "name": 'Median Home Value', 
+        "description": 'Median home value', 
+        "type": 'dollars'
+    },
+    'B25064_001E': {
+        "name": 'Median Rent', 
+        "description": 'Median gross rent (dollars)', 
+        "type": 'dollars'
+    },
+    'B23025_005E': {
+        "name": 'Unemployed', 
+        "description": 'Number of unemployed individuals', 
+        "type": 'count'
+    },
+    'B15003_022E': {
+        "name": "Bachelor's Degrees", 
+        "description": 'Number of bachelor’s degrees', 
+        "type": 'count'
+    },
+    'B08301_003E': {
+        "name": 'Solo Commuters', 
+        "description": 'Number of solo commuters in vehicles', 
+        "type": 'count'
+    },
+    'B27010_018E': {
+        "name": 'Insured Middle-Aged', 
+        "description": 'Number of middle-aged adults with health insurance', 
+        "type": 'count'
+    },
+}
+
+
+
+
+
 
 def save_variables(var_dict, output_filepath, overwrite=False):
     """
     Processes and saves variables to a CSV file.
 
     Parameters:
-    - var_dict (dict): Dictionary mapping ACS variable codes to their descriptions.
+    - var_dict (dict): Dictionary mapping ACS variable codes to their details including name, description, and type.
     - output_filepath (str): The file path where the CSV will be saved.
     - overwrite (bool): If True, overwrite the file if it exists. If False, skip saving to prevent overwriting. Default is False.
 
@@ -350,8 +422,18 @@ def save_variables(var_dict, output_filepath, overwrite=False):
         else:
             print(f"File '{output_filepath}' does not exist and will be created.")
 
-        # Convert the variables dictionary to a DataFrame
-        df_variables = pd.DataFrame(list(var_dict.items()), columns=['variable_code', 'description'])
+        # Convert the variables dictionary to a DataFrame with columns for variable_code, name, description, and type
+        data = [
+            {
+                "variable_code": variable_code,
+                "name": details["name"],
+                "description": details["description"],
+                "type": details["type"]
+            }
+            for variable_code, details in var_dict.items()
+        ]
+        
+        df_variables = pd.DataFrame(data, columns=['variable_code', 'name', 'description', 'type'])
 
         # Save the DataFrame to a CSV file
         df_variables.to_csv(output_filepath, index=False)
@@ -364,7 +446,7 @@ def save_variables(var_dict, output_filepath, overwrite=False):
 variables_filepath = "api/analysis/data/database/variables.csv"
 
 # Call the function to save variables
-save_variables(variables_dictionary, variables_filepath, overwrite=False)
+save_variables(variables_dictionary, variables_filepath, overwrite=True)
 
 # -------------------------
 # 8. Create variable files

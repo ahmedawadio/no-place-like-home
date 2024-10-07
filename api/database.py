@@ -5,7 +5,7 @@ except: from keys import SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY
 
 from supabase import create_client, Client
 import os
-
+# import pandas as pd
 
 
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
@@ -18,12 +18,13 @@ def get_location(zipcode):
     - metro_metrics
     - similar_metros
     """
-    has_error = False
     
     try:
         zipcode_details = supabase.table("zipcodes").select("*").eq("zipcode", zipcode).execute().data[0]
+        initial_zipcode_found = True
+
     except:
-        has_error = True
+        initial_zipcode_found = False
         all_zipcode = supabase.table("zipcodes").select("zipcode").execute().data
         zipcode_list = [int(zipcode['zipcode']) for zipcode in all_zipcode]
         closest_zipcode = min(zipcode_list, key=lambda x: abs(x - int(zipcode)))
@@ -37,46 +38,51 @@ def get_location(zipcode):
 
     similar_mids_string = supabase.table("similar_metros").select("similar_mid").eq("mid",zipcode_mid).execute().data[0]['similar_mid']
     mids_list = [zipcode_mid] +  similar_mids_string.split(',')
-
-    metro_metrics = [zipcode_mid]
+    metro_metrics = []
     metro_details = []
 
+    # print(mids_list)
+
+    # Populate metro metrics and metro details
     for mid in mids_list:
-        metro_metric = supabase.table("metro_metrics").select("*").eq("mid",mid).execute().data
-        metros_details = supabase.table("metros").select("*").eq("mid",mid).execute().data
+        # Retrieve metrics for the current metro ID
+        metro_metric_data = supabase.table("metro_metrics").select("*").eq("mid", mid).execute().data
+        metros_details = supabase.table("metros").select("*").eq("mid", mid).execute().data
 
-        for metric in metro_metric:
-            del metric['creation_date']
+        # Remove 'creation_date' from metrics and metro details
+        for metric in metro_metric_data:
+            if "creation_date" in metric.keys():
+                del metric['creation_date']
 
-        for metro in metro_details:
-            print(metro[0]["creation_date"])
-            # del metro['creation_date']
+        for metro in metros_details:
+            if "creation_date" in metro.keys():
+                del metro['creation_date']
 
-        metro_metrics.append(metro_metric)
-        metro_details.append(metros_details)
+        # Append the structured metrics group to metro_metrics
+        metro_metrics.append({
+            "metro_id": mid,
+            "metrics": metro_metric_data
+        })
+
+        # Append metro details to the list
+        metro_details.append(metros_details[0])
+    variables_list = supabase.table("variables").select("*").execute().data
+    for v in variables_list:
+        if "creation_date" in v.keys():
+            del v['creation_date']
+
+
 
 
     output = {
-            "has_error": has_error,
+            "initial_zipcode_found": initial_zipcode_found,
             "initial_zipcode": zipcode,
             "zipcode": zipcode_details,
             "metro_details": metro_details,
-            "metro_metrics": metro_metrics
+            "metro_metrics": metro_metrics,
+            "variables": variables_list
         }
     return output
-
-
-# print(get_location("47404"))
-# def get_location():
-#     response = supabase.table("example").select("*").execute()
-
-#     # Check if data exists in the response
-#     if response.data and len(response.data) > 0:
-#         # Extract the first row and the 'location' column value
-#         first_row = response.data[0]  # Get the first row
-#         location = first_row.get('location')  # Get the 'location' column value
-#         return location
-#     return "Not found"
 
 
 def insert_into_tables():
@@ -148,6 +154,7 @@ def insert_into_tables():
             df = pd.read_csv(filepath)
             print(f"CSV file '{filepath}' loaded successfully. Number of records: {len(df)}")
 
+        
 
             # Convert DataFrame to list of dictionaries
             records = df.to_dict(orient='records')
@@ -214,6 +221,7 @@ def insert_into_tables():
 
 
 def confirm_tables_created():
+
     """
     Supabase does not currently allow table creation in py.
 
@@ -239,13 +247,14 @@ def confirm_tables_created():
 
         -- 3. Create variables table
 
-        CREATE TABLE IF NOT EXISTS
+       CREATE TABLE IF NOT EXISTS
         variables (
             variable_code VARCHAR PRIMARY KEY,
+            name VARCHAR NOT NULL,
             description TEXT NOT NULL,
+            type VARCHAR NOT NULL,
             creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );
-
 
         -- 4. Create metro_metrics table
         CREATE TABLE IF NOT EXISTS
@@ -316,5 +325,5 @@ def confirm_tables_created():
 if __name__ == "__main__":
     # insert_into_tables()
     # confirm_tables_created()
-    print(get_location("99999"))
+    print(get_location("10001"))
 

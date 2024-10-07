@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import { MultiStepLoader } from '@/components/ui/multi-step-loader';
 import { Header } from '@/components/ui/Header';
 import AnalyticsSection from '@/components/section/AnalyticsSection';
+import { LocationData } from '@/types';
+import AnalyticsSectionLoader from '@/components/section/AnalyticsSectionLoader';
 
 export default function Home() {
 
@@ -49,15 +51,17 @@ export default function Home() {
   const duration = 2000
 
   const defaultLocationData: LocationData = {
-    has_error: false,
     initial_zipcode: "",
+    initial_zipcode_found: false,
     zipcode: {
       mid: "",
       zipcode: "",
-      name: "",
+      city: "",
+      state: "",
     },
-    metro_details: [[]], 
-    metro_metrics: [], 
+    metro_details: [], 
+    metro_metrics: [],
+    variables: [],
   };
   
   const [locationData, setLocationData] = useState<LocationData>(defaultLocationData);
@@ -83,23 +87,40 @@ export default function Home() {
   }, [submittedInput]);
 
 
-  
 
-  
+  const isTest = true
+
+  useEffect(() => {
+    if (isTest){
+      setIsSubmitted(true)
+      setSubmittedInput("12345");
+    }
+  }, [setSubmittedInput]);
   return (
+  
+  <>
+  
+  {/* <BackgroundBeams /> */}
     <div className="">
+
+  <Header/>
 
 
 {isSubmitted &&
 <>
 
+
   {
 
     !isLoading &&
-    <AnalyticsSection  locationData={locationData} setLocationData={setLocationData }/>
+
+    locationData.initial_zipcode.length?
+                  <AnalyticsSection  locationData={locationData} setLocationData={setLocationData}/>
+                  :<AnalyticsSectionLoader locationData={locationData}/>
 
 
   }
+
 <div className="absolute z-10">
 
 <MultiStepLoader loop={false} setIsLoading={setIsLoading} loadingStates={loadingStates} loading={isLoading}  duration={duration} />
@@ -109,7 +130,7 @@ export default function Home() {
 {!isSubmitted && 
 
 <>
-<Header/>
+{/* <Header/> */}
 
 <div className="absolute z-10">
 
@@ -118,7 +139,7 @@ export default function Home() {
 
 
 {/* <Input/> */}
-<BackgroundBeams />
+{/* <BackgroundBeams /> */}
 <HeroTitle/>
 
 
@@ -167,6 +188,7 @@ export default function Home() {
 
 
 </div>
+</>
 
    
   )
