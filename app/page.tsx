@@ -26,21 +26,21 @@ export default function Home() {
     // {
     //   text: "Querying Database",
     // },
-    // {
-    //   text: "Running Model",
-    // },
+    {
+      text: "Running Model",
+    },
     // {
     //   text: "Analyzing Results",
     // },
-    // {
-    //   text: "Clicking Heels 3x",
-    // },
+    {
+      text: "Clicking Heels 3x",
+    },
     // {
     //   text: "Grabbing Coffee",
     // },
-    // {
-    //   text: "Generating Report",
-    // },
+    {
+      text: "Generating Report",
+    },
   ];
   
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +88,7 @@ export default function Home() {
 
 
 
-  const isTest = true
+  const isTest = false
 
   useEffect(() => {
     if (isTest){

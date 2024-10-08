@@ -35,25 +35,17 @@ export function VariablesGraph({
   selectedLocations,
   variables,
 }: VariablesGraphProps) {
-  const selectedVariableDetails = variables.find(
-    (variable) => variable.variable_code === selectedVariable
+
+
+  const metroOneMetrics = metroMetrics[0]?.metrics.filter(
+    (metric) => metric.variable_code === selectedVariable
   );
 
-  // Memoize metroOneMetrics
-  const metroOneMetrics = React.useMemo(() => {
-    return metroMetrics[0]?.metrics.filter(
-      (metric) => metric.variable_code === selectedVariable
-    );
-  }, [metroMetrics, selectedVariable]);
-
-  // Memoize selectedMetroMetrics
-  const selectedMetroMetrics = React.useMemo(() => {
-    return selectedMetro
-      ? metroMetrics
-          .find((metro) => metro.metro_id === selectedMetro.mid)
-          ?.metrics.filter((metric) => metric.variable_code === selectedVariable)
-      : [];
-  }, [metroMetrics, selectedMetro, selectedVariable]);
+  const selectedMetroMetrics = selectedMetro
+    ? metroMetrics
+        .find((metro) => metro.metro_id === selectedMetro.mid)
+        ?.metrics.filter((metric) => metric.variable_code === selectedVariable)
+    : [];
 
   if (
     (!metroOneMetrics || metroOneMetrics.length === 0) &&
@@ -65,6 +57,10 @@ export function VariablesGraph({
       </div>
     );
   }
+  
+  const selectedVariableDetails = variables.find(
+    (variable) => variable.variable_code === selectedVariable
+  );
 
   // Memoize chartData to prevent unnecessary recalculations
   const chartData = React.useMemo(() => {

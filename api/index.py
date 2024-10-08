@@ -1,7 +1,4 @@
 from flask import Flask, jsonify
-# from .database import get_location
-
-
 try: from .database import get_location
 except: from database import get_location
 

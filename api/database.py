@@ -5,7 +5,6 @@ except: from keys import SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY
 
 from supabase import create_client, Client
 import os
-# import pandas as pd
 
 
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
@@ -70,8 +69,6 @@ def get_location(zipcode):
     for v in variables_list:
         if "creation_date" in v.keys():
             del v['creation_date']
-
-
 
 
     output = {
@@ -323,7 +320,8 @@ def confirm_tables_created():
 
 
 if __name__ == "__main__":
+    print("running")
     # insert_into_tables()
     # confirm_tables_created()
-    print(get_location("10001"))
+    # print(get_location("10001"))
 
