@@ -3,8 +3,6 @@
 import { Input } from '@/components/Input';
 import { SpinningGlobe } from '@/components/SpinningGlobe';
 // import { GlobeDemo } from '@/components/world';
-import Image from 'next/image'
-import Link from 'next/link'
 import{FaExclamationTriangle} from 'react-icons/fa'
 import { motion } from "framer-motion";
 import { BackgroundBeams } from '@/components/ui/background-beams';
@@ -88,7 +86,7 @@ export default function Home() {
 
 
 
-  const isTest = false
+  const isTest = true
 
   useEffect(() => {
     if (isTest){
@@ -115,7 +113,7 @@ export default function Home() {
     !isLoading &&
 
     locationData.initial_zipcode.length?
-                  <AnalyticsSection  locationData={locationData} setLocationData={setLocationData}/>
+                  <AnalyticsSection  locationData={locationData}/>
                   :<AnalyticsSectionLoader locationData={locationData}/>
 
 

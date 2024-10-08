@@ -103,15 +103,11 @@ export function VariablesGraph({
 
   const chartConfig = {
     metroOneValue: {
-      label: `${selectedLocations[0]} (${
-        selectedVariableDetails?.name || selectedVariable
-      })`,
+      label: `${selectedLocations[0]}`,
       color: "hsl(var(--chart-1))",
     },
     selectedMetroValue: {
-      label: `${selectedMetro?.name} (${
-        selectedVariableDetails?.name || selectedVariable
-      })`,
+      label: `${selectedMetro?.name}`,
       color: "hsl(var(--chart-2))",
     },
   } satisfies ChartConfig;
@@ -127,7 +123,7 @@ export function VariablesGraph({
   }, [selectedVariable, selectedMetro]);
 
   return (
-    <Card>
+    <Card className=" border rounded-2xl  ">
       <CardHeader>
         <CardTitle>{selectedVariableDetails?.name || selectedVariable}</CardTitle>
         <CardDescription>
@@ -165,8 +161,8 @@ export function VariablesGraph({
           })}
         </div>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
+      <CardContent className="">
+      <ChartContainer className="" config={chartConfig}>
           <AreaChart
             data={chartData}
             margin={{

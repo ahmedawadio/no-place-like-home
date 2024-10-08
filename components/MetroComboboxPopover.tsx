@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {ChevronsUpDown,} from "lucide-react";
+import {ChevronDown, ChevronsUpDown, TrendingUpDown,MapPin} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -40,23 +40,21 @@ export function MetroComboboxPopover({
   }, [metroDetails, selectedMetro, setSelectedMetro]);
 
   return (
-    <div className="flex items-start space-x-2 justify-start flex-col">
+    <div className=" bg-card items-start space-x-2 justify-start flex-col">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
+
+
           <div
-            className="border border-gray-800 rounded-lg p-4 w-full cursor-pointer hover:bg-gray-900"
+            className="border  px-4  border-gray-800 rounded-3xl py-3 w-full cursor-pointer hover:bg-gray-900"
             onClick={() => setOpen(true)}
           >
-            <h3 className="text-3xl font-semibold tracking-tight flex items-center space-x-2">
+            <h3 className="text-xs font-semibold tracking-tight flex items-center">
+          <MapPin className="w-4 h-4 mr-2" />
               <span>{selectedMetro ? selectedMetro.name : "Select Metro Area"}</span>
-              <ChevronsUpDown className=" w-5 h-5" />
+              <ChevronDown className="w-4 h-4 ml-6" />
             </h3>
 
-            <p className="mt-2 opacity-50 flex items-center space-x-2">
-              {/* <span>Your Top {metroDetails.length} Homes Away From Home</span> */}
-              <span>select a location</span>
-
-            </p>
           </div>
         </PopoverTrigger>
         <PopoverContent className="p-0 w-[400px]" side="bottom" align="start">
