@@ -31,5 +31,5 @@ load_env_files(envs)
 SUPABASE_URL: str = os.environ.get("SUPABASE_URL")
 SUPABASE_SERVICE_ROLE_KEY: str = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 CENSUS_API_KEY: str = os.getenv('CENSUS_API_KEY')
-
+OPENAI_API_KEY: str = os.getenv('OPENAI_API_KEY')
 

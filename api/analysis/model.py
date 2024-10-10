@@ -16,6 +16,8 @@ import requests
 # -------------------------
 
 def shape_threshold(df, threshold_percentage):
+    # As of my year writing this (2024) full data is not available for all micro cbsa areas, so cleaning the df in this manner will exclude all 2023 data until more data is available from census
+
     # Replace invalid entries with NaN
     df.replace(['', 'None', None, '-888888888'], pd.NA, inplace=True)
 
@@ -50,6 +52,7 @@ filepath  = "api/analysis/data/query.csv"
 # Load the CSV file with 'cid' as string
 df = pd.read_csv(filepath, dtype={'cid': str}, low_memory=False)
 df.replace(['', 'None', None, '-888888888'], pd.NA, inplace=True)
+print(df.shape)
 
 # Apply thresholding to clean the data
 chosen_threshold = 10
@@ -106,7 +109,8 @@ cluster_counts = clustered_df['Cluster'].value_counts().sort_index()
 
 def get_all_nearest_neighbors(clustered_df, n_neighbors=5):
     """
-    Find the nearest neighbors for each 'cid' within its respective cluster.
+    Find the nearest neighbors for each 'cid' within its cluster.
+    If not enough neighbors are found, look into the next closest clusters.
 
     Parameters:
     - clustered_df (pd.DataFrame): DataFrame containing PCA components, 'Cluster', and 'cid'.
@@ -116,6 +120,8 @@ def get_all_nearest_neighbors(clustered_df, n_neighbors=5):
     - Dictionary where keys are cluster IDs and values are DataFrames with 'cid' and their nearest neighbors.
     """
     from collections import defaultdict
+    import numpy as np
+    from scipy.spatial.distance import cdist
 
     # Initialize a dictionary to store nearest neighbors for each cluster
     nearest_neighbors_by_cluster = defaultdict(pd.DataFrame)
@@ -123,37 +129,88 @@ def get_all_nearest_neighbors(clustered_df, n_neighbors=5):
     # Get list of PCA columns
     pca_columns = [col for col in clustered_df.columns if col.startswith('PC')]
 
-    # Loop over each cluster
+    # Compute centroids of clusters
+    cluster_centroids = clustered_df.groupby('Cluster')[pca_columns].mean()
+
+    # Compute pairwise distances between centroids
+    centroid_distances = cdist(cluster_centroids.values, cluster_centroids.values)
+
+    # Create cluster proximity mapping
+    cluster_proximity = {}
+    for i, cluster_id in enumerate(cluster_centroids.index):
+        distances = centroid_distances[i]
+        # Get indices of clusters ordered by distance
+        sorted_indices = np.argsort(distances)
+        ordered_clusters = cluster_centroids.index[sorted_indices]
+        # Exclude itself
+        ordered_clusters = [cid for cid in ordered_clusters if cid != cluster_id]
+        cluster_proximity[cluster_id] = ordered_clusters
+
+    # Now, for each cluster
     for cluster_id in clustered_df['Cluster'].unique():
         # Subset data for the current cluster
         cluster_data = clustered_df[clustered_df['Cluster'] == cluster_id].copy()
-        
+
+        # Get list of 'cid's in the cluster
+        cids_in_cluster = cluster_data['cid'].values
+
         # Check the size of the cluster
         cluster_size = cluster_data.shape[0]
-        if cluster_size <= 1:
-            # print(f"Cluster {cluster_id} has only {cluster_size} sample(s). Skipping Nearest Neighbors search.")
-            continue  # Skip clusters with only one sample
-        
-        # Adjust n_neighbors
-        current_n_neighbors = min(n_neighbors+1, cluster_size)
-        # print(f"Processing Cluster {cluster_id} with {cluster_size} samples. Finding {current_n_neighbors} neighbors per 'cid'.")
-        
-        # Fit NearestNeighbors
-        nbrs = NearestNeighbors(n_neighbors=current_n_neighbors, metric='euclidean')
-        nbrs.fit(cluster_data[pca_columns])
-        
-        # Find neighbors
-        distances, indices = nbrs.kneighbors(cluster_data[pca_columns])
-        
-        # Create a list of nearest neighbors for each 'cid'
+        if cluster_size == 0:
+            # Skip empty clusters
+            continue
+
+        # For each 'cid' in the cluster
         neighbors_list = []
-        for idx, neighbors in enumerate(indices):
-            neighbor_cids = cluster_data.iloc[neighbors]['cid'].values.tolist()[1:]  # Exclude the 'cid' itsel
-            neighbors_list.append(neighbor_cids)
-        
+        for idx, cid in enumerate(cids_in_cluster):
+            own_pca = cluster_data[cluster_data['cid'] == cid][pca_columns].values  # 1 x n_components
+
+            # Initialize lists for neighbors and distances
+            neighbor_cids = []
+            neighbor_distances = []
+
+            # First, get distances to other points in the same cluster (excluding itself)
+            same_cluster_data = cluster_data[cluster_data['cid'] != cid]
+            if not same_cluster_data.empty:
+                distances = cdist(own_pca, same_cluster_data[pca_columns].values)[0]
+                neighbor_cids.extend(same_cluster_data['cid'].values)
+                neighbor_distances.extend(distances)
+
+            # If not enough neighbors, look into other clusters
+            if len(neighbor_cids) < n_neighbors:
+                # Loop over other clusters in order of proximity
+                for other_cluster_id in cluster_proximity[cluster_id]:
+                    other_cluster_data = clustered_df[clustered_df['Cluster'] == other_cluster_id]
+                    if other_cluster_data.empty:
+                        continue
+                    # Compute distances to all points in the other cluster
+                    distances = cdist(own_pca, other_cluster_data[pca_columns].values)[0]
+                    neighbor_cids.extend(other_cluster_data['cid'].values)
+                    neighbor_distances.extend(distances)
+                    if len(neighbor_cids) >= n_neighbors:
+                        break  # We have enough neighbors
+
+            # Create a DataFrame of neighbors and distances
+            neighbors_df = pd.DataFrame({
+                'cid': neighbor_cids,
+                'distance': neighbor_distances
+            })
+
+            # Sort by distance
+            neighbors_df = neighbors_df.sort_values('distance')
+
+            # Exclude any duplicates (unlikely, but just in case)
+            neighbors_df = neighbors_df.drop_duplicates(subset='cid')
+
+            # Take top n_neighbors
+            top_neighbors = neighbors_df.head(n_neighbors)['cid'].tolist()
+
+            # Add to neighbors list
+            neighbors_list.append(top_neighbors)
+
         # Add to the dictionary
         nearest_neighbors_by_cluster[cluster_id] = pd.DataFrame({
-            'cid': cluster_data['cid'].values,  
+            'cid': cids_in_cluster,  
             'Nearest Neighbors': neighbors_list
         })
     
@@ -161,6 +218,22 @@ def get_all_nearest_neighbors(clustered_df, n_neighbors=5):
 
 # Exampl Get nearest neighbors for all clusters
 nearest_neighbors_all = get_all_nearest_neighbors(clustered_df, n_neighbors=5, )
+
+# Define the target cid
+# target_cid = "35620"
+
+# # Initialize a variable to store the result
+# found_neighbor = None
+
+# # Iterate over each cluster's DataFrame
+# for cluster_id, df in nearest_neighbors_all.items():
+#     # Check if the target_cid exists in the current DataFrame
+#     if target_cid in df['cid'].values:
+#         # Extract the row where 'cid' equals the target_cid
+#         found_neighbor = df[df['cid'] == target_cid]
+#         # print(f"Found cid {target_cid} in cluster {cluster_id}:")
+#         print(found_neighbor)
+#         break  # Stop once we find the first match
 
 
 def save_similar_metros_to_csv(nearest_neighbors_by_cluster, output_filepath, overwrite=False):
@@ -222,7 +295,7 @@ def save_similar_metros_to_csv(nearest_neighbors_by_cluster, output_filepath, ov
     except Exception as e:
         print(f"An error occurred while saving the file: {e}")
 similar_metros_filepath = "api/analysis/data/database/similar_metros.csv"
-# save_similar_metros_to_csv(nearest_neighbors_all, similar_metros_filepath)
+save_similar_metros_to_csv(nearest_neighbors_all, similar_metros_filepath,overwrite=False)
 
 
 
@@ -352,47 +425,64 @@ variables_dictionary = {
     },
 
     # added myself
-    'B01003_001E': {
+    'DP05_0001E': {
         "name": 'Total Population', 
         "description": 'Total population', 
         "type": 'count'
+    },    
+    'DP05_0018E': {
+        "name": 'Median Age',
+        "description": 'Median age of the population',
+        "type": 'years'
     },
-    'B19013_001E': {
-        "name": 'Median Income', 
-        "description": 'Median household income', 
-        "type": 'dollars'
-    },
-    'B25077_001E': {
-        "name": 'Median Home Value', 
-        "description": 'Median home value', 
-        "type": 'dollars'
-    },
-    'B25064_001E': {
-        "name": 'Median Rent', 
-        "description": 'Median gross rent (dollars)', 
-        "type": 'dollars'
-    },
-    'B23025_005E': {
-        "name": 'Unemployed', 
-        "description": 'Number of unemployed individuals', 
+    'DP04_0046E': {
+        "name": 'Owner-Occupied Housing Units',
+        "description": 'Number of housing units that are owner-occupied',
         "type": 'count'
     },
-    'B15003_022E': {
-        "name": "Bachelor's Degrees", 
-        "description": 'Number of bachelor’s degrees', 
+    'DP04_0093E': {
+        "name": 'Housing Units w/ Mortgage',
+        "description": 'Number of housing units that have a mortgage',
         "type": 'count'
-    },
-    'B08301_003E': {
-        "name": 'Solo Commuters', 
-        "description": 'Number of solo commuters in vehicles', 
-        "type": 'count'
-    },
-    'B27010_018E': {
-        "name": 'Insured Middle-Aged', 
-        "description": 'Number of middle-aged adults with health insurance', 
-        "type": 'count'
-    },
-}
+    },}
+
+    
+    # 'B19013_001E': {
+    #     "name": 'Median Income', 
+    #     "description": 'Median household income', 
+    #     "type": 'dollars'
+    # },
+    # 'B25077_001E': {
+    #     "name": 'Median Home Value', 
+    #     "description": 'Median home value', 
+    #     "type": 'dollars'
+    # },
+    # 'B25064_001E': {
+    #     "name": 'Median Rent', 
+    #     "description": 'Median gross rent (dollars)', 
+    #     "type": 'dollars'
+    # },
+    # 'B23025_005E': {
+    #     "name": 'Unemployed', 
+    #     "description": 'Number of unemployed individuals', 
+    #     "type": 'count'
+    # },
+    # 'B15003_022E': {
+    #     "name": "Bachelor's Degrees", 
+    #     "description": 'Number of bachelor’s degrees', 
+    #     "type": 'count'
+    # },
+    # 'B08301_003E': {
+    #     "name": 'Solo Commuters', 
+    #     "description": 'Number of solo commuters in vehicles', 
+    #     "type": 'count'
+    # },
+    # 'B27010_018E': {
+    #     "name": 'Insured Middle-Aged', 
+    #     "description": 'Number of middle-aged adults with health insurance', 
+    #     "type": 'count'
+    # },
+
 
 
 
@@ -541,16 +631,18 @@ save_metro_metrics(df_long, variables_dictionary, metro_metrics_filepath, overwr
 # -------------------------
 
 
-def save_metros(start_year=2019, end_year=2023, overwrite=False):
+def save_metros(start_year=2019, end_year=2023, overwrite=False, webscrape=False):
     """
     Fetches metropolitan/micropolitan statistical area data from the Census API for each year,
-    processes it to extract 'NAME' and 'mid', maps 'mid' using the global 'df' DataFrame's 'cid',
+    processes it to extract 'NAME' and 'mid',
+    optionally performs web scraping to collect additional data,
     and saves all data to a single 'metros.csv' file at the end.
 
     Parameters:
     - start_year (int): The starting year for data retrieval. Default is 2019.
     - end_year (int): The ending year for data retrieval. Default is 2024.
     - overwrite (bool): If True, overwrite existing 'metros.csv'. If False, skip saving to prevent overwriting. Default is False.
+    - webscrape (bool): If True, performs web scraping to collect additional data. Default is False.
 
     Returns:
     - None
@@ -617,22 +709,6 @@ def save_metros(start_year=2019, end_year=2023, overwrite=False):
                     # Convert 'mid' to string (if not already)
                     df_metro['mid'] = df_metro['mid'].astype(str)
 
-                    # Map 'mid' using global 'df' DataFrame's 'cid'
-                    if 'cid' in df.columns:
-                        # Ensure 'cid' is also string
-                        df['cid'] = df['cid'].astype(str)
-                        cid_set = set(df['cid'].unique())
-
-                        original_count = len(df_metro)
-                        df_metro = df_metro[df_metro['mid'].isin(cid_set)]
-                        filtered_count = len(df_metro)
-                        removed_count = original_count - filtered_count
-
-                        print(f"Year {year}: Filtered metros to include only those with 'mid' present in 'df' 'cid' column.")
-                        print(f"Year {year}: Removed {removed_count} records; {filtered_count} records remain.")
-                    else:
-                        print("Warning: Global DataFrame 'df' does not contain 'cid' column. Skipping 'mid' mapping.")
-
                     # Add 'year' column
                     df_metro['year'] = year
 
@@ -658,11 +734,23 @@ def save_metros(start_year=2019, end_year=2023, overwrite=False):
             combined_df = pd.concat(all_years_data, ignore_index=True)
             combined_df = combined_df[['mid', 'name']]
             combined_df = combined_df.drop_duplicates(subset='mid', keep='first')
-        
+
+            # Remove the last 10 characters from 'name' (assuming ' Metro Area' or similar)
+            combined_df['name'] = combined_df['name'].apply(lambda x: x[:-10] if isinstance(x, str) else x)
+
             print(f"\nTotal records collected from {start_year} to {end_year}: {len(combined_df)}")
 
+            # If webscrape is True, perform web scraping
+            if webscrape:
+                print("Starting web scraping for each metro area...")
+                # Collect additional data via web scraping
+                scraped_data = asyncio.run(web_scrape_multiple(combined_df['name'].tolist()))
+
+                # Merge scraped data into combined_df
+                combined_df = pd.merge(combined_df, scraped_data, on='name', how='left')
+
             # Define the output filepath
-            metros_filepath = os.path.join(output_dir, "metros.csv")
+            metros_filepath = os.path.join(output_dir, "metros2.csv")
 
             # Check if the file exists and handle overwrite
             if os.path.exists(metros_filepath) and not overwrite:
@@ -676,9 +764,275 @@ def save_metros(start_year=2019, end_year=2023, overwrite=False):
     except Exception as e:
         print(f"An error occurred during data retrieval and processing: {e}")
 
+def adjust_place_name(name):
+    """
+    Adjusts the place name by taking the part before the first dash
+    and appending the comma and state abbreviation (if not already present).
 
-save_metros(overwrite=True)
+    Parameters:
+    - name (str): The original metro name.
 
+    Returns:
+    - str: The adjusted place name.
+    """
+    dash_index = name.find('-')
+    if dash_index != -1:
+        name_part = name[:dash_index].strip()
+    else:
+        name_part = name.strip()
+    
+    comma_index = name.find(',')
+    if comma_index != -1:
+        # Include comma and next two letters (state abbreviation)
+        state_part = name[comma_index:comma_index+4]
+        # Check if state abbreviation is already in name_part, if so, skip appending it
+        if state_part in name_part:
+            adjusted_name = name_part
+        else:
+            adjusted_name = name_part + state_part
+    else:
+        adjusted_name = name_part  # No state abbreviation available, return name_part alone
+
+    return adjusted_name
+
+async def web_scrape_data_usa(browser, search_query, total_names, current_index):
+    """
+    Webscrapes the Data USA website to find information for the given search query,
+    retries with adjusted parameters if initial attempt fails,
+    and collects section titles and descriptions on the resulting page.
+
+    Parameters:
+    browser: The browser instance from Playwright.
+    search_query (str): The query to search for.
+    total_names (int): Total number of names being processed (for progress tracking).
+    current_index (int): The current index of the name being processed.
+
+    Returns:
+    dict: A dictionary containing the scraped data.
+    """
+    # Mapping dictionary to convert titles to desired lowercase format
+    title_map = {
+        'About': 'about',
+        'Population & Diversity': 'population',
+        'Economy': 'economy',
+        'Civics': 'civics',
+        'Education': 'education',
+        'Housing & Living': 'housing',
+        'Health': 'health'
+    }
+
+    section_data = {'name': search_query}
+    data_found = False  # Flag to indicate whether data was found
+    data_source_url = ""  # To store the URL used
+
+    # Define initial and alternative URLs
+    initial_url = "https://datausa.io/search/?q=&dimension=Geography&hierarchy=MSA"
+    alternative_url = "https://datausa.io/search/?q=&dimension=Geography"
+
+    try:
+        page = await browser.new_page()
+
+        # First attempt with initial URL and search query
+        await page.goto(initial_url)
+        await page.wait_for_timeout(2000)
+
+        # Perform search
+        search_input = page.locator("input.bp3-input[placeholder='Find a report...']")
+        await search_input.fill(search_query)
+        await page.wait_for_timeout(2000)
+        await search_input.press("ArrowDown")
+        await page.wait_for_timeout(500)
+        await search_input.press("Enter")
+        await page.wait_for_timeout(3000)
+
+        # Collect sections
+        sections = page.locator(".section-title, .section-description")
+        section_count = await sections.count()
+
+        if section_count > 0:
+            data_found = True
+            data_source_url = initial_url
+        else:
+            # No data found, try alternative URL and adjusted search query
+            adjusted_query = adjust_place_name(search_query)
+            await page.goto(alternative_url)
+            await page.wait_for_timeout(2000)
+
+            # Perform search with adjusted query
+            search_input = page.locator("input.bp3-input[placeholder='Find a report...']")
+            await search_input.fill(adjusted_query)
+            await page.wait_for_timeout(2000)
+            await search_input.press("ArrowDown")
+            await page.wait_for_timeout(500)
+            await search_input.press("Enter")
+            await page.wait_for_timeout(3000)
+
+            # Collect sections
+            sections = page.locator(".section-title, .section-description")
+            section_count = await sections.count()
+
+            if section_count > 0:
+                data_found = True
+                data_source_url = alternative_url
+                section_data['name'] = adjusted_query  # Update name to adjusted query
+            else:
+                print(f"No data found for '{search_query}' even after adjusting the query.")
+
+        # If data was found, process sections
+        if data_found:
+            for i in range(0, section_count, 2):
+                title_element = sections.nth(i)
+                description_element = sections.nth(i + 1) if i + 1 < section_count else None
+                title = await title_element.text_content()
+
+                # Collecting all <p> elements within the description and joining with \n\n delimiter
+                if description_element:
+                    paragraphs = await description_element.locator('p').all_text_contents()
+                    description = "\n\n".join(paragraphs)
+                else:
+                    description = ""
+
+                if title:
+                    # Apply the title mapping and use lowercase keys
+                    mapped_title = title_map.get(title.strip(), title.strip().lower())
+                    section_data[mapped_title] = description.strip() if description else ""
+
+                    # Print the length of each section's description
+                    description_length = len(description.strip()) if description else 0
+                    print(f"Processed '{mapped_title}' section for '{search_query}': Description Length = {description_length} characters")
+
+            # Add 'data_source' to section_data
+            section_data['data_source'] = data_source_url
+
+    except Exception as e:
+        print(f"An error occurred during web scraping for '{search_query}': {e}")
+    finally:
+        await page.close()
+
+    return section_data
+
+async def web_scrape_multiple(names):
+    """
+    Performs web scraping for multiple names and collects the data into a DataFrame.
+
+    Parameters:
+    - names (iterable): An iterable of names to search and scrape.
+
+    Returns:
+    - DataFrame containing the scraped data for each name.
+    """
+    total_names = len(names)
+    completed = 0
+
+    # Limit the number of concurrent tasks to prevent overwhelming the server
+    semaphore = asyncio.Semaphore(5)  # Adjust the concurrency limit as appropriate
+
+    async def sem_task(name, browser, index):
+        async with semaphore:
+            data = await web_scrape_data_usa(browser, name, total_names, index)
+            return data
+
+    results = []
+
+    async with async_playwright() as p:
+        # Set up the Playwright browser
+        browser = await p.chromium.launch(headless=True)
+        tasks = [sem_task(name, browser, idx + 1) for idx, name in enumerate(names)]
+        # Use asyncio.as_completed to process tasks as they complete
+        for coro in asyncio.as_completed(tasks):
+            result = await coro
+            results.append(result)
+            completed += 1
+            percent_complete = (completed / total_names) * 100
+            print(f"Progress: {percent_complete:.2f}% complete ({completed}/{total_names})")
+
+        await browser.close()
+
+    # Convert the results list to a DataFrame
+    scraped_df = pd.DataFrame(results)
+    return scraped_df
+
+
+def check_metros_for_nulls(filepath="api/analysis/data/database/metros.csv"):
+    """
+    Reads the metros CSV file and checks for null values and empty strings
+    in each column, providing a count of occurrences.
+
+    Parameters:
+    - filepath (str): The path to the metros CSV file. Default is 'api/analysis/data/database/metros.csv'.
+
+    Returns:
+    - None: Prints the results to the console.
+    """
+    try:
+        # Load the CSV file
+        df = pd.read_csv(filepath)
+        print(f"File '{filepath}' loaded successfully. Total records: {len(df)}\n")
+
+        # Check for null values
+        null_counts = df.isnull().sum()
+        # print("Null values count per column:")
+        # print(null_counts)
+        # print()
+
+        # Check for empty strings
+        empty_string_counts = (df.applymap(lambda x: x == '')).sum()
+        # print("Empty string count per column:")
+        # print(empty_string_counts)
+        # print()
+
+        # Combine both null and empty counts for a total 'missing' count
+        total_missing_counts = null_counts + empty_string_counts
+        print("Total missing values (nulls + empty strings) per column:")
+        print(total_missing_counts)
+
+    except FileNotFoundError:
+        print(f"File not found at '{filepath}'. Please check the file path.")
+    except Exception as e:
+        print(f"An error occurred while processing the file: {e}")
+
+
+def check_empty_rows(filepath="api/analysis/data/database/metros.csv"):
+    """
+    Reads the metros CSV file and identifies rows where all columns 
+    (excluding 'mid' and 'name') are either NULL or empty strings.
+
+    Parameters:
+    - filepath (str): The path to the metros CSV file. Default is 'api/analysis/data/database/metros.csv'.
+
+    Returns:
+    - None: Prints the results to the console.
+    """
+    try:
+        # Load the CSV file
+        df = pd.read_csv(filepath)
+        print(f"File '{filepath}' loaded successfully. Total records: {len(df)}\n")
+
+        # Define the columns to check for emptiness (excluding 'mid' and 'name')
+        columns_to_check = ['about', 'population', 'economy', 'education', 'housing', 'health', 'civics']
+        
+        # Create a boolean mask for rows where all specified columns are either null or empty
+        mask_empty = df[columns_to_check].applymap(lambda x: pd.isnull(x) or x == '').all(axis=1)
+        
+        # Count and display the rows with no meaningful data in these columns
+        empty_rows_count = mask_empty.sum()
+        print(f"Number of rows with all '{columns_to_check}' columns empty or NULL (excluding 'mid' and 'name'): {empty_rows_count}")
+
+        # Optionally, show the specific rows if desired
+        if empty_rows_count > 0:
+            print("\nRows with no data in specified columns (excluding 'mid' and 'name'):")
+            print(df[mask_empty])
+        return df[mask_empty]
+
+    except FileNotFoundError:
+        print(f"File not found at '{filepath}'. Please check the file path.")
+    except Exception as e:
+        print(f"An error occurred while processing the file: {e}")
+
+
+# save_metros(overwrite=False, webscrape=False)
+
+# check_metros_for_nulls("api/analysis/data/database/metros.csv")
 
 
 # -------------------------
@@ -739,5 +1093,5 @@ zipcodes_save_filepath = "api/analysis/data/database/zipcodes.csv"
 
 
 # Call the function to save filtered 'zipcodes'
-save_zipcodes(zipcodes_read_filepath, zipcodes_save_filepath, overwrite=True)
+save_zipcodes(zipcodes_read_filepath, zipcodes_save_filepath, overwrite=False)
 

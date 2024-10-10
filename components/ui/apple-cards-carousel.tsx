@@ -27,6 +27,7 @@ type Card = {
   title: string;
   category: string;
   content: React.ReactNode;
+  data_source: string;
 };
 
 export const CarouselContext = createContext<{
@@ -74,11 +75,11 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     if (carouselRef.current) {
       const cardWidth = isMobile() ? 230 : 384; // (md:w-96)
       const gap = isMobile() ? 4 : 8;
-      const scrollPosition = (cardWidth + gap) * (index + 1);
-      carouselRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
+      // const scrollPosition = (cardWidth + gap) * (index + 1);
+      // carouselRef.current.scrollTo({
+      //   left: scrollPosition,
+      //   behavior: "smooth",
+      // });
       setCurrentIndex(index);
     }
   };
@@ -92,10 +93,10 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
       value={{ onCardClose: handleCardClose, currentIndex }}
     >
 
-      <div className="  w-screen">
+      <div className=" w-screen">
         
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto py-10 md:py-20 scroll-smooth [scrollbar-width:none]"
+          className="flex w-full overflow-x-scroll overscroll-x-auto pb-5 md:pb-10 scroll-smooth [scrollbar-width:none]"
           ref={carouselRef}
           onScroll={checkScrollability}
         >
@@ -107,7 +108,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
           <div
             className={cn(
-              "flex flex-row justify-start gap-4 pl-4",
+              "flex flex-row justify-start gap-4 pl-0",
               "max-w-7xl mx-auto" // remove max-w-4xl if you want the carousel to span the full width of its container
             )}
           >
@@ -211,53 +212,59 @@ export const Card = ({
 
   return (
     <>
-      {open && mounted &&
-        createPortal(
-          <AnimatePresence>
-            <div className="fixed inset-0 h-screen z-50 overflow-auto">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="bg-black/80 backdrop-blur-lg h-full w-full fixed inset-0"
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                ref={containerRef}
-                layoutId={layout ? `card-${card.title}` : undefined}
-                className="fixed inset-0 mx-auto bg-white dark:bg-neutral-900 z-[60] p-4 md:p-10 rounded-3xl font-sans overflow-y-auto"
-                style={{ maxWidth: "90vw", maxHeight: "90vh" }}
-              >
-                <button
-                  className="absolute top-4 right-4 h-8 w-8 bg-black dark:bg-white rounded-full flex items-center justify-center"
-                  onClick={handleClose}
-                >
-                  <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
-                </button>
-                <motion.p
-                  layoutId={layout ? `category-${card.title}` : undefined}
-                  className="text-base font-medium text-black dark:text-white"
-                >
-                  {card.category}
-                </motion.p>
-                <motion.p
-                  layoutId={layout ? `title-${card.title}` : undefined}
-                  className="text-2xl md:text-5xl font-semibold text-neutral-700 mt-4 dark:text-white"
-                >
-                  {card.title}
-                </motion.p>
-                <div className="py-10">{card.content}</div>
-              </motion.div>
-            </div>
-          </AnimatePresence>,
-          document.body
-        )}
+{open && mounted &&
+  createPortal(
+    <AnimatePresence>
+      <div className="fixed inset-0 h-screen z-50 flex items-center justify-center overflow-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="bg-black/80 backdrop-blur-lg h-full w-full fixed inset-0"
+        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          ref={containerRef}
+          layoutId={layout ? `card-${card.title}` : undefined}
+          className=" relative bg-neutral-900 z-[60] p-4 md:p-10 rounded-3xl font-sans overflow-y-auto"
+          style={{ maxWidth: "90vw", maxHeight: "90vh" }}
+        >
+          <button
+          className="absolute top-4 right-4 h-8 w-8 bg-white rounded-full flex items-center justify-center"
+          onClick={handleClose}
+                  >
+            <IconX className="h-6 w-6 text-neutral-900" />
+          </button>
+          <motion.p
+            layoutId={layout ? `category-${card.title}` : undefined}
+            className="text-base font-medium text-white"
+          >
+            {card.category}
+          </motion.p>
+          <motion.p
+            layoutId={layout ? `title-${card.title}` : undefined}
+            className="text-2xl md:text-5xl font-semibold mt-4 text-white"
+          >
+            {card.title}
+          </motion.p>
+         
+          <div className="pt-10 px-28">{card.content}</div>
+        <motion.p className="text-sm mt-10 text-center  text-gray-400">
+            Source: <a href={card.data_source} target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-300">DataUSA</a>
+        </motion.p>
+        </motion.div>
+
+      </div>
+    </AnimatePresence>,
+    document.body
+  )}
+
       <motion.button
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={handleOpen}
-        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[40rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative z-10"
+        className="rounded-3xl bg-neutral-900 h-80 w-56 md:h-[40rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative z-10"
       >
         <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
         <div className="relative z-40 p-8">

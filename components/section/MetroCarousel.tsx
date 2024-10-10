@@ -2,21 +2,139 @@
 import Image from "next/image";
 import React from "react";
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
+import { Home, Users, Briefcase, GraduationCap, HomeIcon, Heart, MapPin } from "lucide-react";
+import { MetroDetail } from "@/types";
 
-export function MetroCarousel() {
-  const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
-  ));
 
+// Define the type for individual card items
+interface CardData {
+    category: string;
+    title: string;
+    src: string;
+    content: React.ReactNode;
+  }
+
+type Card = {
+    src: string;
+    title: string;
+    category: string;
+    content: React.ReactNode;
+    data_source: string;
+  };
+  
+
+
+  interface Props {
+    metro_details: MetroDetail[];
+  }
+
+export function MetroCarousel({metro_details}: Props) {
+
+
+    interface MetroContentProps {
+        metro: MetroDetail;
+      }
+      
+      const MetroContent: React.FC<MetroContentProps> = ({ metro }) => {
+        // Function to split content by \n\n and wrap each in a <p> tag
+        const renderParagraphs = (text: string) => {
+          return text.split('\n\n').map((paragraph, index) => (
+            <p key={index} className="mb-4">
+              {paragraph}
+            </p>
+          ));
+        };
+      
+        return (
+          <>
+            {/* About Section */}
+            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+              <MapPin className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                <span className="font-bold text-neutral-200">About</span>
+                <br /><br />
+                {renderParagraphs(metro.about)}
+              </div>
+            </div>
+      
+            {/* Population & Diversity Section */}
+            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+              <Users className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                <span className="font-bold text-neutral-200">Population & Diversity</span>
+                <br /><br />
+                {renderParagraphs(metro.population)}
+              </div>
+            </div>
+      
+            {/* Economy Section */}
+            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+              <Briefcase className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                <span className="font-bold text-neutral-200">Economy</span>
+                <br /><br />
+                {renderParagraphs(metro.economy)}
+              </div>
+            </div>
+      
+            {/* Education Section */}
+            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+              <GraduationCap className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                <span className="font-bold text-neutral-200">Education</span>
+                <br /><br />
+                {renderParagraphs(metro.education)}
+              </div>
+            </div>
+      
+            {/* Housing & Living Section */}
+            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+              <HomeIcon className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                <span className="font-bold text-neutral-200">Housing & Living</span>
+                <br /><br />
+                {renderParagraphs(metro.housing)}
+              </div>
+            </div>
+      
+            {/* Health Section */}
+            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+              <Heart className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                <span className="font-bold text-neutral-200">Health</span>
+                <br /><br />
+                {renderParagraphs(metro.health)}
+              </div>
+              
+            </div>
+          </>
+        );
+      };
+      
+      
+
+      
+      
+//   const cards = data.map((card, index) => (
+//     <Card key={card.src} card={card} index={index} />
+//   ));
+
+  const cards = metro_details.map((metro, index) => {
+    const cardData = {
+      category: `Metro Area ${index + 1}`,
+      title: metro.name,
+      src: metro.image_uri,
+      content: <MetroContent metro={metro} />,
+      data_source: metro.data_source,
+    };
+
+    return (
+      <Card key={metro.mid} card={cardData} index={index} />
+    );
+  });
   return (
     <div className="w-full h-full py-0 overflow-x-visible">
-    {/* Centered heading */}
-    {/* <div className="max-w-7xl mx-auto pl-4">
-      <h2 className="text-xl md:text-5xl font-bold text-neutral-800 dark:text-neutral-200 font-sans">
-        Get to know your iSad.
-      </h2>
-    </div> */}
-    {/* Carousel allowed to overflow */}
+ 
     <div className="overflow-x-visible">
       <Carousel items={cards} />
     </div>
@@ -25,74 +143,99 @@ export function MetroCarousel() {
   );
 }
 
+
+
 const DummyContent = () => {
   return (
     <>
-      {[...new Array(3).fill(1)].map((_, index) => {
-        return (
-          <div
-            key={"dummy-content" + index}
-            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
-          >
-            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-              <span className="font-bold text-neutral-700 dark:text-neutral-200">
-                The first rule of Apple club is that you boast about Apple club.
-              </span>{" "}
-              Keep a journal, quickly jot down a grocery list, and take amazing
-              class notes. Want to convert those notes to text? No problem.
-              Langotiya jeetu ka mara hua yaar is ready to capture every
-              thought.
-            </p>
-            <Image
-              src="https://assets.aceternity.com/macbook.png"
-              alt="Macbook mockup from Aceternity UI"
-              height="500"
-              width="500"
-              className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
-            />
-          </div>
-        );
-      })}
+      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+        <MapPin className="text-neutral-400 w-20 pr-4 mt-1" />
+        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+          <span className="font-bold text-neutral-200">About</span> <br /><br />
+          In 2022, Big Stone Gap, VA had a population of 39.8k people with a median age of 42 and a median household income of $46,680...
+        </p>
+      </div>
+
+      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+        <Users className="text-neutral-400 w-20 pr-4 mt-1" />
+        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+          <span className="font-bold text-neutral-200">Population & Diversity</span> <br /><br />
+          Big Stone Gap, VA is home to a population of 39.8k people, from which 99.3% are citizens. As of 2022, 1.62% of Big Stone Gap, VA residents were born outside of the country...
+        </p>
+      </div>
+
+      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+        <Briefcase className="text-neutral-400 w-20 pr-4 mt-1" />
+        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+          <span className="font-bold text-neutral-200">Economy</span> <br /><br />
+          The economy of Big Stone Gap, VA employs 14.2k people. The largest industries in Big Stone Gap, VA are Health Care & Social Assistance, Retail Trade, and Educational Services...
+        </p>
+      </div>
+
+      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+        <GraduationCap className="text-neutral-400 w-20 pr-4 mt-1" />
+        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+          <span className="font-bold text-neutral-200">Education</span> <br /><br />
+          In 2022, universities in Big Stone Gap, VA awarded 1,208 degrees. The student population is skewed towards women, with 1,404 male students and 2,228 female students...
+        </p>
+      </div>
+
+      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+        <HomeIcon className="text-neutral-400 w-20 pr-4 mt-1" />
+        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+          <span className="font-bold text-neutral-200">Housing & Living</span> <br /><br />
+          The median property value in Big Stone Gap, VA was $107,600 in 2022, reflecting a 13.3% increase from $95,000 in the previous year. The homeownership rate is 68.6%...
+        </p>
+      </div>
+
+      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+        <Heart className="text-neutral-400 w-20 pr-4 mt-1" />
+        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+          <span className="font-bold text-neutral-200">Health</span> <br /><br />
+          In 2022, 91.9% of the population of Big Stone Gap, VA had health coverage. Primary care physicians in Virginia see 1,324 patients per year on average...
+        </p>
+      </div>
     </>
   );
 };
 
-const data = [
-  {
-    category: "Artificial Intelligence",
-    title: "You can do more with AI.",
-    src: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=3556&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-  {
-    category: "Productivity",
-    title: "Enhance your productivity.",
-    src: "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-  {
-    category: "Product",
-    title: "Launching the new Apple Vision Pro.",
-    src: "https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
+  
 
-  {
-    category: "Product",
-    title: "Maps for your iPhone 15 Pro Max.",
-    src: "https://images.unsplash.com/photo-1599202860130-f600f4948364?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-  {
-    category: "iOS",
-    title: "Photography just got better.",
-    src: "https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-  {
-    category: "Hiring",
-    title: "Hiring for a Staff Software Engineer",
-    src: "https://images.unsplash.com/photo-1511984804822-e16ba72f5848?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-];
+  const data = [
+    {
+      category: "Number 1",
+      title: "Worcester, MA-CT Metro Area",
+      src: "/assets/Downtown Albany-Schenectady-Troy.webp",
+      content: <DummyContent />,
+      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+    },
+    {
+      category: "Number 2",
+      title: "Springfield, MA Metro Area",
+      src: "/assets/Downtown Springfield MA.webp",
+      content: <DummyContent />,
+      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+    },
+    {
+      category: "Number 3",
+      title: "Rochester, NY Metro Area",
+      src: "/assets/Downtown Rochester Pastel.webp",
+      content: <DummyContent />,
+      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+    },
+    {
+      category: "Number 4",
+      title: "Syracuse, NY Metro Area",
+      src: "/assets/Downtown Syracuse Pastel Scene.webp",
+      content: <DummyContent />,
+      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+    },
+    {
+      category: "Number 5",
+      title: "Hartford-East Hartford-Middletown, CT Metro Area",
+      src: "/assets/Downtown Hartford Scene.webp",
+      content: <DummyContent />,
+      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+    },
+  ];
+  

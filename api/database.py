@@ -5,6 +5,7 @@ except: from keys import SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY
 
 from supabase import create_client, Client
 import os
+# import pandas as pd
 
 
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
@@ -24,7 +25,7 @@ def get_location(zipcode):
 
     except:
         initial_zipcode_found = False
-        all_zipcode = supabase.table("zipcodes").select("zipcode").execute().data
+        all_zipcode = supabase.table("zipcodes").select("zipcode").execute().data 
         zipcode_list = [int(zipcode['zipcode']) for zipcode in all_zipcode]
         closest_zipcode = min(zipcode_list, key=lambda x: abs(x - int(zipcode)))
         zipcode_details = supabase.table("zipcodes").select("*").eq("zipcode", closest_zipcode).execute().data[0]
@@ -56,6 +57,7 @@ def get_location(zipcode):
         for metro in metros_details:
             if "creation_date" in metro.keys():
                 del metro['creation_date']
+            metro["image_uri"] = f"/api/image/{metro['mid']}"
 
         # Append the structured metrics group to metro_metrics
         metro_metrics.append({
@@ -151,7 +153,7 @@ def insert_into_tables():
             df = pd.read_csv(filepath)
             print(f"CSV file '{filepath}' loaded successfully. Number of records: {len(df)}")
 
-        
+            df = df.fillna("")
 
             # Convert DataFrame to list of dictionaries
             records = df.to_dict(orient='records')
@@ -223,13 +225,20 @@ def confirm_tables_created():
     Supabase does not currently allow table creation in py.
 
     Go into your supabase dashboard/sql editor and paste this (not counting {}): {
-         -- 1. Create metros table
-        CREATE TABLE IF NOT EXISTS
-        metros (
+        -- 1. Create metros table
+        CREATE TABLE IF NOT EXISTS metros (
             mid VARCHAR PRIMARY KEY,
             name VARCHAR NOT NULL,
+            about TEXT NOT NULL,
+            population TEXT NOT NULL,
+            economy TEXT NOT NULL,
+            education TEXT NOT NULL,
+            housing TEXT NOT NULL,
+            health TEXT NOT NULL,
+            civics TEXT NOT NULL,
             creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );
+
 
         -- 2. Create zipcodes table
         CREATE TABLE IF NOT EXISTS
@@ -320,8 +329,11 @@ def confirm_tables_created():
 
 
 if __name__ == "__main__":
+    import pandas as pd
+    #importand pandas at the bottom because i didnt want to add it to the requirments file
+
     print("running")
-    # insert_into_tables()
+    insert_into_tables()
     # confirm_tables_created()
     # print(get_location("10001"))
 

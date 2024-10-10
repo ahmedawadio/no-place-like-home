@@ -2,6 +2,9 @@ from flask import Flask, jsonify
 try: from .database import get_location
 except: from database import get_location
 
+try: from .bucket import get_image
+except: from bucket import get_image
+
 app = Flask(__name__)
 
 @app.route("/api/python")
@@ -18,4 +21,11 @@ def location(zipcode):
 
     response = jsonify(get_location(zipcode))
     return response
+
+
+
+@app.route("/api/image/<string:mid>", methods=["GET"])
+def image(mid):
+    return get_image(mid)
+
 

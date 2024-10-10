@@ -1,6 +1,15 @@
 export type MetroDetail = {
   mid: string;
   name: string;
+  about: string;
+  population: string;
+  economy:string;
+  civics: string;
+  education: string;
+  housing: string;
+  health: string;
+  data_source: string;
+  image_uri: string;
 };
 
 export type MetroMetric = {
