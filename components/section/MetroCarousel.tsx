@@ -45,68 +45,96 @@ export function MetroCarousel({metro_details}: Props) {
           ));
         };
       
+        // Check if all sections are empty
+        const isAllSectionsEmpty = 
+          !metro.about && 
+          !metro.population && 
+          !metro.economy && 
+          !metro.education && 
+          !metro.housing && 
+          !metro.health;
+      
         return (
           <>
-            {/* About Section */}
-            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-              <MapPin className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
-              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
-                <span className="font-bold text-neutral-200">About</span>
-                <br /><br />
-                {renderParagraphs(metro.about)}
+            {isAllSectionsEmpty ? (
+              <div className="text-neutral-400 text-center text-2xl font-sans p-8">
+                No demographic details provided.
               </div>
-            </div>
-      
-            {/* Population & Diversity Section */}
-            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-              <Users className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
-              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
-                <span className="font-bold text-neutral-200">Population & Diversity</span>
-                <br /><br />
-                {renderParagraphs(metro.population)}
-              </div>
-            </div>
-      
-            {/* Economy Section */}
-            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-              <Briefcase className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
-              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
-                <span className="font-bold text-neutral-200">Economy</span>
-                <br /><br />
-                {renderParagraphs(metro.economy)}
-              </div>
-            </div>
-      
-            {/* Education Section */}
-            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-              <GraduationCap className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
-              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
-                <span className="font-bold text-neutral-200">Education</span>
-                <br /><br />
-                {renderParagraphs(metro.education)}
-              </div>
-            </div>
-      
-            {/* Housing & Living Section */}
-            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-              <HomeIcon className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
-              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
-                <span className="font-bold text-neutral-200">Housing & Living</span>
-                <br /><br />
-                {renderParagraphs(metro.housing)}
-              </div>
-            </div>
-      
-            {/* Health Section */}
-            <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-              <Heart className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
-              <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
-                <span className="font-bold text-neutral-200">Health</span>
-                <br /><br />
-                {renderParagraphs(metro.health)}
-              </div>
-              
-            </div>
+            ) : (
+              <>
+                {/* About Section */}
+                {metro.about && (
+                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <MapPin className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                    <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                      <span className="font-bold text-neutral-200">About</span>
+                      <br /><br />
+                      {renderParagraphs(metro.about)}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Population & Diversity Section */}
+                {metro.population && (
+                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <Users className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                    <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                      <span className="font-bold text-neutral-200">Population & Diversity</span>
+                      <br /><br />
+                      {renderParagraphs(metro.population)}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Economy Section */}
+                {metro.economy && (
+                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <Briefcase className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                    <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                      <span className="font-bold text-neutral-200">Economy</span>
+                      <br /><br />
+                      {renderParagraphs(metro.economy)}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Education Section */}
+                {metro.education && (
+                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <GraduationCap className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                    <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                      <span className="font-bold text-neutral-200">Education</span>
+                      <br /><br />
+                      {renderParagraphs(metro.education)}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Housing & Living Section */}
+                {metro.housing && (
+                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <HomeIcon className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                    <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                      <span className="font-bold text-neutral-200">Housing & Living</span>
+                      <br /><br />
+                      {renderParagraphs(metro.housing)}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Health Section */}
+                {metro.health && (
+                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <Heart className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                    <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                      <span className="font-bold text-neutral-200">Health</span>
+                      <br /><br />
+                      {renderParagraphs(metro.health)}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </>
         );
       };
