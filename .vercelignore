@@ -4,3 +4,6 @@
 
 # Exclude the entire analysis folder
 analysis/
+
+.next/cache
+
