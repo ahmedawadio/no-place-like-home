@@ -5,6 +5,10 @@ except: from keys import SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY
 
 from supabase import create_client, Client
 import os
+
+from flask import Flask, send_file, jsonify
+from io import BytesIO
+
 # import pandas as pd
 
 
@@ -82,6 +86,30 @@ def get_location(zipcode):
             "variables": variables_list
         }
     return output
+
+
+
+
+def get_image(mid: str):
+    try:
+        # Define the path in Supabase storage
+        path_on_supabase = f"{mid}.png"
+
+        # Download the file from Supabase
+        response = supabase.storage.from_("metros").download(path_on_supabase)
+
+        # If no data is returned, assume the file was not found
+        if response is None:
+            return jsonify({"error": f"Image not found for MID {mid}"}), 404
+
+        # Wrap the binary image data in a BytesIO object
+        img_data = BytesIO(response)
+
+        # Return the image as a file response with the appropriate mime type
+        return send_file(img_data, mimetype="image/png")
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 def insert_into_tables():
