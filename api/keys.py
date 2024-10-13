@@ -1,12 +1,3 @@
-"""
-In order to not consume all my free credits for my cloud functions, 
-I will only query Census API locally(which can take a good amountof time), 
-then populate the db. 
-
-The cloud functions will only connect to the db and compute similarty scores 
-
-"""
-
 import os
 from dotenv import load_dotenv, find_dotenv
 from supabase import create_client, Client

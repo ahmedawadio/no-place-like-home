@@ -329,11 +329,11 @@ def confirm_tables_created():
 
 
 if __name__ == "__main__":
-    import pandas as pd
+    # import pandas as pd
     #importand pandas at the bottom because i didnt want to add it to the requirments file
 
     print("running")
-    insert_into_tables()
+    # insert_into_tables()
     # confirm_tables_created()
     # print(get_location("10001"))
 
