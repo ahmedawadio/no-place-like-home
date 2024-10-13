@@ -5,6 +5,8 @@ except: from database import get_location
 try: from .bucket import get_image
 except: from bucket import get_image
 
+from api.bucket import get_image
+
 app = Flask(__name__)
 
 @app.route("/api/python")

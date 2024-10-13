@@ -87,14 +87,16 @@ def get_image(mid: str):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 # Example usage
 if __name__ == "__main__":
-    import pandas as pd
+    print("running")
+    # import pandas as pd
 
-    csv_filepath = "api/analysis/data/database/metros.csv"
-    image_dir = "api/analysis/data/bucket"
+    # csv_filepath = "api/analysis/data/database/metros.csv"
+    # image_dir = "api/analysis/data/bucket"
     
-    upload_images_to_supabase(
-        csv_filepath=csv_filepath,
-        image_dir=image_dir
-    )
+    # upload_images_to_supabase(
+    #     csv_filepath=csv_filepath,
+    #     image_dir=image_dir
+    # )
