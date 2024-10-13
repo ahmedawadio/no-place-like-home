@@ -1,23 +1,25 @@
 "use client"
-// import { Globe } from '@/components/ui/globe'
+// // import { Globe } from '@/components/ui/globe'
 import { Input } from '@/components/Input';
-// import { SpinningGlobe } from '@/components/SpinningGlobe';
-// import { GlobeDemo } from '@/components/world';
-import{FaExclamationTriangle} from 'react-icons/fa'
+import { SpinningGlobe } from '@/components/SpinningGlobe';
+// // import { GlobeDemo } from '@/components/world';
 import { motion } from "framer-motion";
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { HeroTitle } from '@/components/HeroTitle';
-// import { LoaderOverlay } from '@/components/LoaderOverlay';
-import { useEffect, useState } from 'react';
+// // import { LoaderOverlay } from '@/components/LoaderOverlay';
 import { MultiStepLoader } from '@/components/ui/multi-step-loader';
 import { Header } from '@/components/ui/Header';
 import AnalyticsSection from '@/components/section/AnalyticsSection';
-import { LocationData, MetroDetail } from '@/types';
 import AnalyticsSectionLoader from '@/components/section/AnalyticsSectionLoader';
+
+
+// import{FaExclamationTriangle} from 'react-icons/fa'
+import { useEffect, useState } from 'react';
+import { LocationData, MetroDetail } from '@/types';
 
 export default function Home() {
 
-
+// return<div></div>
   const loadingStates = [
     {
       text: "Conencting to API",
@@ -109,14 +111,17 @@ export default function Home() {
       setSubmittedInput("12345");
     }
   }, [setSubmittedInput]);
+
+
+  // return(null)
+
+
   return (
   
   <>
   
-  {/* <BackgroundBeams /> */}
     <div className="">
-
-  <Header/>
+      <Header/>
 
 
 {isSubmitted &&
@@ -140,10 +145,9 @@ export default function Home() {
 </div>
 </>
 }
-{!isSubmitted && 
 
+{!isSubmitted && 
 <>
-{/* <Header/> */}
 
 <div className="absolute z-10">
 
@@ -151,7 +155,6 @@ export default function Home() {
 </div>
 
 
-{/* <Input/> */}
 <BackgroundBeams />
 <HeroTitle/>
 
@@ -159,7 +162,7 @@ export default function Home() {
 
 {!isSubmitted &&
 
-{/* <SpinningGlobe/> */}
+ <SpinningGlobe/> 
 }
 
 {/* <LoaderOverlay/> */}
@@ -195,27 +198,25 @@ export default function Home() {
 </div>
 </motion.div>
 </>
-
 }
 
 
-
-</div>
+  </div>
 </>
 
    
   )
 }
 
-function StillUnderConstruction() {
+// function StillUnderConstruction() {
 
-  return(
+//   return(
 
-    <div className="flex ml-10 mt-8">
-    <div className="flex items-center border border-yellow-500 bg-yellow-200 bg-opacity-10 text-yellow-300 text-md font-semibold px-4 py-2 rounded-2xl">
-      <FaExclamationTriangle className="w-5 h-5 mr-2 text-yellow-300" />
-      Under Construction
-    </div>
-  </div>
-  )
- }
+//     <div className="flex ml-10 mt-8">
+//     <div className="flex items-center border border-yellow-500 bg-yellow-200 bg-opacity-10 text-yellow-300 text-md font-semibold px-4 py-2 rounded-2xl">
+//       <FaExclamationTriangle className="w-5 h-5 mr-2 text-yellow-300" />
+//       Under Construction
+//     </div>
+//   </div>
+//   )
+//  }

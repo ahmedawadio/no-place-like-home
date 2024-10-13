@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap'); */
 
 @tailwind base;
 @tailwind components;
@@ -35,7 +35,8 @@
     --chart-5: 340 75% 55%;
   }
   .pacifico-regular {
-    font-family: "Pacifico", cursive;
+    /* font-family: "Pacifico", cursive; */
+    font-family: 'Inter', Arial, sans-serif;
     font-weight: 400;
     font-style: normal;
   }

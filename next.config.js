@@ -19,9 +19,9 @@ const nextConfig = {
     config.cache = false;  // Disables webpack cache
     return config;
   },
-  experimental: {
-    swcMinify: false,  // Disables SWC minification caching
-  },
+  // experimental: {
+  //   swcMinify: false,  // Disables SWC minification caching
+  // },
   images: {
     remotePatterns: [
       {
