@@ -17,7 +17,6 @@ import AnalyticsSectionLoader from '@/components/section/AnalyticsSectionLoader'
 
 export default function Home() {
 
-  return <div></div>
 
   const loadingStates = [
     {
