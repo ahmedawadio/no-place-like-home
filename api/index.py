@@ -1,9 +1,9 @@
 from flask import Flask, jsonify
-try: from .database import get_location
-except: from database import get_location
+# try: from .database import get_location
+# except: from database import get_location
 
-try: from .bucket import get_image
-except: from bucket import get_image
+# try: from .bucket import get_image
+# except: from bucket import get_image
 
 app = Flask(__name__)
 
