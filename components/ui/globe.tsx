@@ -265,12 +265,7 @@ export function World(props: WorldProps) {
     //   />
     <Canvas 
    camera={{ position: [0, 0, cameraZ], fov: 45, near: 180, far: 1800 }}
-   onCreated={({ gl, scene }) => {
-      gl.setPixelRatio(window.devicePixelRatio);
-      gl.setSize(size.width, size.height);
-      gl.setClearColor(0xffaaff, 0);
-      scene.fog = new Fog(0xffffff, 400, 2000);
-   }}
+  
 >
    <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
    <directionalLight
