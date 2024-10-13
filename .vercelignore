@@ -1,0 +1,6 @@
+# Exclude all CSV and PNG files
+*.csv
+*.png
+
+# Exclude the entire analysis folder
+analysis/
