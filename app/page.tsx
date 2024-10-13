@@ -1,7 +1,7 @@
 "use client"
 // import { Globe } from '@/components/ui/globe'
 import { Input } from '@/components/Input';
-import { SpinningGlobe } from '@/components/SpinningGlobe';
+// import { SpinningGlobe } from '@/components/SpinningGlobe';
 // import { GlobeDemo } from '@/components/world';
 import{FaExclamationTriangle} from 'react-icons/fa'
 import { motion } from "framer-motion";
@@ -158,7 +158,7 @@ export default function Home() {
 
 {!isSubmitted &&
 
-<SpinningGlobe/>
+{/* <SpinningGlobe/> */}
 }
 
 {/* <LoaderOverlay/> */}
