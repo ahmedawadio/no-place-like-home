@@ -1,3 +1,4 @@
+
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Color, Scene, Fog, PerspectiveCamera, Vector3 } from "three";
@@ -95,8 +96,31 @@ export function Globe({ globeConfig, data }: WorldProps) {
     if (globeRef.current) {
       _buildData();
       _buildMaterial();
+   
     }
-  }, [globeRef.current]);
+  }, [globeData]);
+
+  useEffect(() => {
+    if (globeRef.current && globeData) {
+      // All your configurations and data methods
+      globeRef.current
+        .hexPolygonsData(countries.features)
+        .hexPolygonResolution(3)
+        .hexPolygonMargin(0.7)
+        .showAtmosphere(defaultProps.showAtmosphere)
+        .atmosphereColor(defaultProps.atmosphereColor)
+        .atmosphereAltitude(defaultProps.atmosphereAltitude)
+        .hexPolygonColor(() => defaultProps.polygonColor);
+  
+      startAnimation();
+  
+      // Now set the rotation
+      const usaLongitude = -100; // Approximate longitude of the USA center
+      const usaLatitude = 40;    // Approximate latitude of the USA center
+      globeRef.current.rotation.y = -usaLongitude * (Math.PI / 180); // Longitude rotation
+      globeRef.current.rotation.x = usaLatitude * (Math.PI / 180);    // Latitude rotation
+    }
+  }, [globeData]);
 
   const _buildMaterial = () => {
     if (!globeRef.current) return;
@@ -285,12 +309,13 @@ export function World(props: WorldProps) {
       <OrbitControls
         enablePan={false}
         enableZoom={false}
+        enableRotate={false} // Disable rotation
+        autoRotate={false}
         minDistance={cameraZ}
         maxDistance={cameraZ}
         autoRotateSpeed={1}
-        autoRotate={true}
-        minPolarAngle={Math.PI / 3.5}
-        maxPolarAngle={Math.PI - Math.PI / 3}
+        minPolarAngle={Math.PI / 2}
+        maxPolarAngle={Math.PI / 2}
       />
     </Canvas>
   );
@@ -320,4 +345,3 @@ export function genRandomNumbers(min: number, max: number, count: number) {
   }
 
   return arr;
-}
