@@ -30,15 +30,15 @@ export default function Home() {
     {
       text: "Running Model",
     },
-    // {
-    //   text: "Analyzing Results",
-    // },
+    {
+      text: "Analyzing Results",
+    },
     {
       text: "Clicking Heels 3x",
     },
-    // {
-    //   text: "Grabbing Coffee",
-    // },
+    {
+      text: "Grabbing Coffee",
+    },
     {
       text: "Generating Report",
     },
@@ -78,19 +78,6 @@ export default function Home() {
         console.log(data.has_error)
         setLocationData(data); // Set the response data into state
 
-        // Preload images after data is received
-        if (data && data.metro_details) {
-          data.metro_details.forEach((metro: MetroDetail) => {
-            if (metro.image_uri) {
-              const img = new Image();
-              img.src = metro.image_uri; // Start preloading image
-            }
-          });
-        }
-
-
-      
-
       } catch (error) {
         
         console.error({error});
@@ -102,6 +89,24 @@ export default function Home() {
   }, [submittedInput]);
 
 
+  useEffect(() => {
+    
+    const preloadImage = (src:any) => {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = src;
+      document.head.appendChild(link);
+    };
+  
+    if (locationData.metro_details) {
+      locationData.metro_details.forEach((metro) => {
+        if (metro.image_uri) {
+          preloadImage(metro.image_uri);
+        }
+      });
+    }
+  }, [locationData]);
 
   const isTest = false
 
