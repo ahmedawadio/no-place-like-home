@@ -598,7 +598,7 @@ const sampleArcs = [
     color: colors[Math.floor(Math.random() * (colors.length - 1))],
   }
 ];
-export function UsaGlobe() {
+export default function UsaGlobe() {
   const globeConfig = {
     pointSize: 4,
     globeColor: "#000000",
@@ -811,12 +811,9 @@ export function Globe({ globeConfig, data }: WorldProps) {
         .hexPolygonColor(() => defaultProps.polygonColor);
       startAnimation();
 
-      // Set the initial rotation based on initialPosition
-      const { lat, lng } = defaultProps.initialPosition || { lat: 0, lng: 0 };
-      globeRef.current.rotation.y = (-lng + 180) * (Math.PI / 30);
-      globeRef.current.rotation.x = -lat * (Math.PI / 30);
+      
     }
-  }, [globeData, defaultProps.initialPosition]);
+  }, [globeData]);
 
   
   // Initialize arcs, points, and rings
