@@ -100,7 +100,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
       <div className=" w-screen">
         
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto pb-5 md:pb-10 scroll-smooth [scrollbar-width:none]"
+          className="flex max-w-fit w-full overflow-x-scroll overscroll-x-auto pb-5 md:pb-10 scroll-smooth [scrollbar-width:none]"
           ref={carouselRef}
           onScroll={checkScrollability}
         >

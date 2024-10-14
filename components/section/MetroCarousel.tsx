@@ -173,97 +173,97 @@ export function MetroCarousel({metro_details}: Props) {
 
 
 
-const DummyContent = () => {
-  return (
-    <>
-      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
-        <MapPin className="text-neutral-400 w-20 pr-4 mt-1" />
-        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-          <span className="font-bold text-neutral-200">About</span> <br /><br />
-          In 2022, Big Stone Gap, VA had a population of 39.8k people with a median age of 42 and a median household income of $46,680...
-        </p>
-      </div>
+// const DummyContent = () => {
+//   return (
+//     <>
+//       <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+//         <MapPin className="text-neutral-400 w-20 pr-4 mt-1" />
+//         <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+//           <span className="font-bold text-neutral-200">About</span> <br /><br />
+//           In 2022, Big Stone Gap, VA had a population of 39.8k people with a median age of 42 and a median household income of $46,680...
+//         </p>
+//       </div>
 
-      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
-        <Users className="text-neutral-400 w-20 pr-4 mt-1" />
-        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-          <span className="font-bold text-neutral-200">Population & Diversity</span> <br /><br />
-          Big Stone Gap, VA is home to a population of 39.8k people, from which 99.3% are citizens. As of 2022, 1.62% of Big Stone Gap, VA residents were born outside of the country...
-        </p>
-      </div>
+//       <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+//         <Users className="text-neutral-400 w-20 pr-4 mt-1" />
+//         <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+//           <span className="font-bold text-neutral-200">Population & Diversity</span> <br /><br />
+//           Big Stone Gap, VA is home to a population of 39.8k people, from which 99.3% are citizens. As of 2022, 1.62% of Big Stone Gap, VA residents were born outside of the country...
+//         </p>
+//       </div>
 
-      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
-        <Briefcase className="text-neutral-400 w-20 pr-4 mt-1" />
-        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-          <span className="font-bold text-neutral-200">Economy</span> <br /><br />
-          The economy of Big Stone Gap, VA employs 14.2k people. The largest industries in Big Stone Gap, VA are Health Care & Social Assistance, Retail Trade, and Educational Services...
-        </p>
-      </div>
+//       <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+//         <Briefcase className="text-neutral-400 w-20 pr-4 mt-1" />
+//         <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+//           <span className="font-bold text-neutral-200">Economy</span> <br /><br />
+//           The economy of Big Stone Gap, VA employs 14.2k people. The largest industries in Big Stone Gap, VA are Health Care & Social Assistance, Retail Trade, and Educational Services...
+//         </p>
+//       </div>
 
-      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
-        <GraduationCap className="text-neutral-400 w-20 pr-4 mt-1" />
-        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-          <span className="font-bold text-neutral-200">Education</span> <br /><br />
-          In 2022, universities in Big Stone Gap, VA awarded 1,208 degrees. The student population is skewed towards women, with 1,404 male students and 2,228 female students...
-        </p>
-      </div>
+//       <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+//         <GraduationCap className="text-neutral-400 w-20 pr-4 mt-1" />
+//         <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+//           <span className="font-bold text-neutral-200">Education</span> <br /><br />
+//           In 2022, universities in Big Stone Gap, VA awarded 1,208 degrees. The student population is skewed towards women, with 1,404 male students and 2,228 female students...
+//         </p>
+//       </div>
 
-      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
-        <HomeIcon className="text-neutral-400 w-20 pr-4 mt-1" />
-        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-          <span className="font-bold text-neutral-200">Housing & Living</span> <br /><br />
-          The median property value in Big Stone Gap, VA was $107,600 in 2022, reflecting a 13.3% increase from $95,000 in the previous year. The homeownership rate is 68.6%...
-        </p>
-      </div>
+//       <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+//         <HomeIcon className="text-neutral-400 w-20 pr-4 mt-1" />
+//         <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+//           <span className="font-bold text-neutral-200">Housing & Living</span> <br /><br />
+//           The median property value in Big Stone Gap, VA was $107,600 in 2022, reflecting a 13.3% increase from $95,000 in the previous year. The homeownership rate is 68.6%...
+//         </p>
+//       </div>
 
-      <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
-        <Heart className="text-neutral-400 w-20 pr-4 mt-1" />
-        <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-          <span className="font-bold text-neutral-200">Health</span> <br /><br />
-          In 2022, 91.9% of the population of Big Stone Gap, VA had health coverage. Primary care physicians in Virginia see 1,324 patients per year on average...
-        </p>
-      </div>
-    </>
-  );
-};
+//       <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start">
+//         <Heart className="text-neutral-400 w-20 pr-4 mt-1" />
+//         <p className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+//           <span className="font-bold text-neutral-200">Health</span> <br /><br />
+//           In 2022, 91.9% of the population of Big Stone Gap, VA had health coverage. Primary care physicians in Virginia see 1,324 patients per year on average...
+//         </p>
+//       </div>
+//     </>
+//   );
+// };
 
   
 
-  const data = [
-    {
-      category: "Number 1",
-      title: "Worcester, MA-CT Metro Area",
-      src: "/assets/Downtown Albany-Schenectady-Troy.webp",
-      content: <DummyContent />,
-      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
-    },
-    {
-      category: "Number 2",
-      title: "Springfield, MA Metro Area",
-      src: "/assets/Downtown Springfield MA.webp",
-      content: <DummyContent />,
-      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
-    },
-    {
-      category: "Number 3",
-      title: "Rochester, NY Metro Area",
-      src: "/assets/Downtown Rochester Pastel.webp",
-      content: <DummyContent />,
-      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
-    },
-    {
-      category: "Number 4",
-      title: "Syracuse, NY Metro Area",
-      src: "/assets/Downtown Syracuse Pastel Scene.webp",
-      content: <DummyContent />,
-      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
-    },
-    {
-      category: "Number 5",
-      title: "Hartford-East Hartford-Middletown, CT Metro Area",
-      src: "/assets/Downtown Hartford Scene.webp",
-      content: <DummyContent />,
-      data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
-    },
-  ];
+//   const data = [
+//     {
+//       category: "Number 1",
+//       title: "Worcester, MA-CT Metro Area",
+//       src: "/assets/Downtown Albany-Schenectady-Troy.webp",
+//       content: <DummyContent />,
+//       data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+//     },
+//     {
+//       category: "Number 2",
+//       title: "Springfield, MA Metro Area",
+//       src: "/assets/Downtown Springfield MA.webp",
+//       content: <DummyContent />,
+//       data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+//     },
+//     {
+//       category: "Number 3",
+//       title: "Rochester, NY Metro Area",
+//       src: "/assets/Downtown Rochester Pastel.webp",
+//       content: <DummyContent />,
+//       data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+//     },
+//     {
+//       category: "Number 4",
+//       title: "Syracuse, NY Metro Area",
+//       src: "/assets/Downtown Syracuse Pastel Scene.webp",
+//       content: <DummyContent />,
+//       data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+//     },
+//     {
+//       category: "Number 5",
+//       title: "Hartford-East Hartford-Middletown, CT Metro Area",
+//       src: "/assets/Downtown Hartford Scene.webp",
+//       content: <DummyContent />,
+//       data_source: "https://datausa.io/profile/geo/big-stone-gap-va-31000US13720",
+//     },
+//   ];
   

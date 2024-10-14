@@ -270,7 +270,7 @@ export function VariablesGraph({
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             {chartData.length > 0 && (
-              <div className="flex items-center gap-2 font-medium leading-none">
+              <div className="flex items-center gap-2 font-medium leading-snug">
                 {(() => {
                   const metroOneValue = activeData.metroOneValue || 0;
                   const selectedMetroValue = activeData.selectedMetroValue || 0;
