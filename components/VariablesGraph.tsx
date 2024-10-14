@@ -162,12 +162,12 @@ export function VariablesGraph({
         </div>
       </CardHeader>
       <CardContent className="">
-      <ChartContainer className="" config={chartConfig}>
+      <ChartContainer className="p-0 m-0" config={chartConfig}>
           <AreaChart
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
+              left: 0,
+              right: 0,
             }}
             onMouseMove={(state) => {
                 if (state.isTooltipActive && state.activePayload && state.activePayload[0]) {
@@ -185,12 +185,17 @@ export function VariablesGraph({
               tickLine={false}
               axisLine={false}
               tickMargin={8}
+              padding={{ left: 0, right: 0 }}
+
             />
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => valueFormatter(value)}
+            
+            
+
             />
             <ChartTooltip
               cursor={true}
@@ -267,7 +272,7 @@ export function VariablesGraph({
         </ChartContainer>
       </CardContent>
       <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
+        <div className="flex w-full py-6 items-start gap-2 text-sm">
           <div className="grid gap-2">
             {chartData.length > 0 && (
               <div className="flex items-center gap-2 font-medium leading-snug">
