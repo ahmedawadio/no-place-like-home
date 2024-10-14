@@ -5,7 +5,7 @@ export function Header() {
         href="https://www.ahmedawad.io/"
         className=" flex items-center cursor-pointer opacity-20"
       >
-        <span className="text-2xl ">Nest ML </span>
+      <span className="text-xl sm:text-2xl">Nest ML</span>
       </a>
 
 

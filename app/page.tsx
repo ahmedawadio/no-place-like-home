@@ -16,6 +16,8 @@ import AnalyticsSectionLoader from '@/components/section/AnalyticsSectionLoader'
 // import{FaExclamationTriangle} from 'react-icons/fa'
 import { useEffect, useState } from 'react';
 import { LocationData, MetroDetail } from '@/types';
+import { World } from '@/components/ui/globe';
+import { UsaGlobe } from '@/components/UsaGlobe';
 
 export default function Home() {
 
@@ -125,9 +127,8 @@ export default function Home() {
   
   <>
   
-    <div className="">
       <Header/>
-
+    <div className="pt-2">
 
 {isSubmitted &&
 <>
@@ -154,25 +155,13 @@ export default function Home() {
 {!isSubmitted && 
 <>
 
-<div className="absolute z-10">
-
-{/* <MultiStepLoader loop={false} setIsLoading={setIsLoading} loadingStates={loadingStates} loading={isLoading}  duration={duration} /> */}
-</div>
 
 
 <BackgroundBeams />
 <HeroTitle/>
+ {/* <SpinningGlobe/>  */}
 
-
-
-{!isSubmitted &&
-
- <SpinningGlobe/> 
-}
-
-{/* <LoaderOverlay/> */}
-
-
+<UsaGlobe/>
 <motion.div
           initial={{
             opacity: 0,
@@ -191,17 +180,15 @@ export default function Home() {
       <div className="absolute w-full bottom-0 inset-x-0 h-80 bg-gradient-to-b  from-transparent to-black" />
       <div className="flex flex-col items-center justify-center absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b  from-transparent to-black" >
 
-{/* <div className="mb-20 h-10 w-500 mx-auto p-4 flex flex-col items-center justify-center"> */}
 
              <Input setSubmittedInput={setSubmittedInput} setIsSubmitted={setIsSubmitted} setIsLoading={setIsLoading}/>
 
 
-          <p className="text-center  w-full text-md font-normal text-neutral-400 dark:text-neutral-100 max-w-md  ">
-            Enter your zipcode to find homes away from home <br/>
-            {/* {locationData} */}
-          </p>
+   
 </div>
 </motion.div>
+
+
 </>
 }
 

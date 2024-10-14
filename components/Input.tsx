@@ -72,7 +72,7 @@ export function Input({ setSubmittedInput, setIsLoading, setIsSubmitted }: Input
   };
 
   return (
-    <div className="my-2 w-full flex flex-col items-center justify-center">
+    <div className="my-2 w-full px-4 flex flex-col items-center justify-center">
       {/* Conditionally render error message */}
       {error && (
       <p className="absolute top-3 text-red-500 text-sm  text-center" id="zipcode-error">
@@ -88,6 +88,9 @@ export function Input({ setSubmittedInput, setIsLoading, setIsSubmitted }: Input
         shouldAnimate={shouldAnimate}
         setShouldAnimate={setShouldAnimate}
       />
+             <p className="text-center -mx-6 px-6 w-full text-md font-normal mt-2 text-neutral-400 dark:text-neutral-100 max-w-md  ">
+            Enter your zipcode to find homes away from home <br/>
+          </p>
     </div>
   );
 }
