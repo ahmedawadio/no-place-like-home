@@ -17,7 +17,12 @@ import AnalyticsSectionLoader from '@/components/section/AnalyticsSectionLoader'
 import { useEffect, useState } from 'react';
 import { LocationData, MetroDetail } from '@/types';
 import { World } from '@/components/ui/globe';
-import { UsaGlobe } from '@/components/UsaGlobe';
+import dynamic from 'next/dynamic';
+
+// need to make it ssr fasle because heavily realies on the window size
+// const UsaGlobe = dynamic(() => import('../components/UsaGlobeExport'), { ssr: false });
+
+import UsaGlobe from '../components/UsaGlobeExport';
 
 export default function Home() {
 
