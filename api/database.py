@@ -26,14 +26,38 @@ def get_location(zipcode):
     try:
         zipcode_details = supabase.table("zipcodes").select("*").eq("zipcode", zipcode).execute().data[0]
         initial_zipcode_found = True
-
     except:
+        #  not a perfect implemtation for finding the closest zipcode, but it works for now, ideally I would use a zipcode api but I am on the freetier for my backend, so just shortest distance is sufficent for identifying general closest region
+        # Initialize pagination variables
         initial_zipcode_found = False
-        all_zipcode = supabase.table("zipcodes").select("zipcode").execute().data 
-        zipcode_list = [int(zipcode['zipcode']) for zipcode in all_zipcode]
-        closest_zipcode = min(zipcode_list, key=lambda x: abs(x - int(zipcode)))
-        zipcode_details = supabase.table("zipcodes").select("*").eq("zipcode", closest_zipcode).execute().data[0]
+        chunk_size = 1000
+        start = 0
+        all_zipcode = []
 
+        # Loop to fetch all ZIP codes in chunks
+        while True:
+            # Fetch a chunk of ZIP codes using the range method
+            chunk = supabase.table("zipcodes").select("zipcode").range(start, start + chunk_size - 1).execute().data
+
+            # Break the loop if no more data is returned
+            if not chunk:
+                break
+
+            # Add the current chunk to the complete list
+            all_zipcode.extend(chunk)
+            
+            # Update the starting point for the next query
+            start += chunk_size
+
+  
+        # Create a list of ZIP codes as integers for distance calculation
+        zipcode_list = [int(zipcode_data['zipcode']) for zipcode_data in all_zipcode]
+
+        # Find the closest ZIP code based on numerical difference
+        closest_zipcode = min(zipcode_list, key=lambda x: abs(x - int(zipcode)))
+
+        # Query the database for the details of the closest ZIP code
+        zipcode_details = supabase.table("zipcodes").select("*").eq("zipcode", closest_zipcode).execute().data[0]
 
     del zipcode_details['creation_date']
 
@@ -361,7 +385,7 @@ if __name__ == "__main__":
     #importand pandas at the bottom because i didnt want to add it to the requirments file
 
     print("running")
-    # insert_into_tables()
-    # confirm_tables_created()
-    # print(get_location("10001"))
+    # # insert_into_tables()
+    # # confirm_tables_created()
+    # print(get_location("99999"))
 
