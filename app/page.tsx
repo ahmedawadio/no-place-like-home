@@ -30,15 +30,15 @@ export default function Home() {
     {
       text: "Running Model",
     },
-    {
-      text: "Analyzing Results",
-    },
+    // {
+    //   text: "Analyzing Results",
+    // },
     {
       text: "Clicking Heels 3x",
     },
-    {
-      text: "Grabbing Coffee",
-    },
+    // {
+    //   text: "Grabbing Coffee",
+    // },
     {
       text: "Generating Report",
     },
@@ -156,7 +156,7 @@ export default function Home() {
 
 <div className="absolute z-10">
 
-<MultiStepLoader loop={false} setIsLoading={setIsLoading} loadingStates={loadingStates} loading={isLoading}  duration={duration} />
+{/* <MultiStepLoader loop={false} setIsLoading={setIsLoading} loadingStates={loadingStates} loading={isLoading}  duration={duration} /> */}
 </div>
 
 
