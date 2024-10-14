@@ -182,8 +182,9 @@ export function PlaceholdersAndVanishInput({
   return (
     <form
       className={cn(
-        "w-full px-4 relative max-w-xl mx-auto bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
-        value && "bg-gray-900"
+        "w-full relative max-w-xl mx-auto bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
+        value && "bg-gray-900",
+        error ? "border-2 border-red-500" : "border-2 border-transparent" // Added border here
       )}
       onSubmit={(e) => {
         e.preventDefault();
@@ -210,9 +211,9 @@ export function PlaceholdersAndVanishInput({
         // type="number" // Uncomment if numeric input is desired
 
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border h-full rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20 text-white bg-transparent",
-          animating ? "text-transparent" : "",
-          error ? "border-red-500" : "border-transparent" // Conditional border color
+          "w-full h-full text-sm sm:text-base z-50 rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20 text-white bg-transparent",
+          animating ? "text-transparent" : ""
+          // Removed border classes from input
         )}
         aria-invalid={error}
         aria-describedby={error ? "zipcode-error" : undefined}
@@ -255,7 +256,7 @@ export function PlaceholdersAndVanishInput({
         </motion.svg>
       </button>
 
-      <div className="absolute inset-0 ml-3 flex items-center rounded-full pointer-events-none">
+      <div className="absolute inset-0 flex items-center rounded-full pointer-events-none">
         <AnimatePresence mode="wait">
           {!value && (
             <motion.p
@@ -276,7 +277,7 @@ export function PlaceholdersAndVanishInput({
                 duration: 0.3,
                 ease: "linear",
               }}
-              className="text-zinc-500 text-sm sm:text-base font-normal pl-4 sm:pl-12  w-[calc(100%-2rem)] truncate"
+              className="text-zinc-500 text-sm sm:text-base font-normal pl-4 sm:pl-10 w-[calc(100%-2rem)] truncate"
             >
               {placeholders[currentPlaceholder]}
             </motion.p>
