@@ -16,7 +16,6 @@ export default function AnalyticsSection({
   locationData,
 }: Props) {
  
-  const similarMetroDetails = locationData.metro_details.slice(1);
 
   const renderParagraphs = (text: string) => {
     return text.split('\n\n').map((paragraph, index) => (

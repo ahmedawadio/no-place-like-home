@@ -10,12 +10,16 @@ import {
   IconArrowNarrowLeft,
   IconArrowNarrowRight,
   IconX,
+  IconChevronLeft,
+  IconChevronRight,
+  IconPlus,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Image, { ImageProps } from "next/image";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { createPortal } from "react-dom";
+import { PlusIcon } from "lucide-react";
 
 interface CarouselProps {
   items: JSX.Element[];
@@ -146,14 +150,14 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
             onClick={scrollLeft}
             disabled={!canScrollLeft}
           >
-            <IconArrowNarrowLeft className="h-6 w-6 text-gray-500" />
+            <IconChevronLeft className="h-6 w-6 text-gray-500" />
           </button>
           <button
             className="relative z-40 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center disabled:opacity-50"
             onClick={scrollRight}
             disabled={!canScrollRight}
           >
-            <IconArrowNarrowRight className="h-6 w-6 text-gray-500" />
+            <IconChevronRight className="h-6 w-6 text-gray-500" />
           </button>
         </div>
 
@@ -287,6 +291,9 @@ export const Card = ({
           fill
           className="object-cover absolute z-10 inset-0"
         />
+          <div className="absolute bottom-4 right-4 rounded-full bg-gray-800 bg-opacity-50 backdrop-blur-lg p-2 flex items-center justify-center z-50">
+            <PlusIcon className="text-white w-7 h-7" />
+          </div>
       </motion.button>
     </>
   );
