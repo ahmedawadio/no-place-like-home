@@ -132,11 +132,14 @@ export default function Home() {
   
   <>
   
-      <Header/>
+      {/* <Header/> */}
     <div className="pt-2">
 
 {isSubmitted &&
+
 <>
+<Header/>
+
 
 
   {
@@ -163,7 +166,9 @@ export default function Home() {
 
 
 <BackgroundBeams />
+<Header/>
 <HeroTitle/>
+
  {/* <SpinningGlobe/>  */}
 
 <UsaGlobe/>
