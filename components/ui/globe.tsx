@@ -345,3 +345,4 @@ export function genRandomNumbers(min: number, max: number, count: number) {
   }
 
   return arr;
+}
