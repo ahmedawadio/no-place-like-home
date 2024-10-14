@@ -629,7 +629,7 @@ export default function UsaGlobe() {
  
     <div className="w-full min-h-screen   flex flex-col items-center justify-center">       
         
-        <div className="w-full h-[50vh] sm:h-[50vh] lg:h-[70vh] flex items-center justify-center">
+        <div className="w-full h-[40vh] sm:h-[50vh] lg:h-[70vh] flex items-center justify-center">
             
       <World data={sampleArcs} globeConfig={globeConfig} />
 
