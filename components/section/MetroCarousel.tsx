@@ -64,20 +64,21 @@ export function MetroCarousel({metro_details}: Props) {
               <>
                 {/* About Section */}
                 {metro.about && (
-                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-                    <MapPin className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
-                    <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
+                  <div className="bg-neutral-800 p-4 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                        <MapPin className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0 hidden md:flex" />
+                        <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
                       <span className="font-bold text-neutral-200">About</span>
                       <br /><br />
                       {renderParagraphs(metro.about)}
                     </div>
                   </div>
+                  
                 )}
                 
                 {/* Population & Diversity Section */}
                 {metro.population && (
-                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-                    <Users className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                  <div className="bg-neutral-800 p-4 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <Users className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0 hidden md:flex" />
                     <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
                       <span className="font-bold text-neutral-200">Population & Diversity</span>
                       <br /><br />
@@ -88,8 +89,8 @@ export function MetroCarousel({metro_details}: Props) {
                 
                 {/* Economy Section */}
                 {metro.economy && (
-                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-                    <Briefcase className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                  <div className="bg-neutral-800 p-4 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <Briefcase className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0 hidden md:flex" />
                     <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
                       <span className="font-bold text-neutral-200">Economy</span>
                       <br /><br />
@@ -100,8 +101,8 @@ export function MetroCarousel({metro_details}: Props) {
                 
                 {/* Education Section */}
                 {metro.education && (
-                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-                    <GraduationCap className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                  <div className="bg-neutral-800 p-4 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <GraduationCap className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0 hidden md:flex" />
                     <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
                       <span className="font-bold text-neutral-200">Education</span>
                       <br /><br />
@@ -112,8 +113,8 @@ export function MetroCarousel({metro_details}: Props) {
                 
                 {/* Housing & Living Section */}
                 {metro.housing && (
-                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-                    <HomeIcon className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                  <div className="bg-neutral-800 p-4 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <HomeIcon className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0 hidden md:flex" />
                     <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
                       <span className="font-bold text-neutral-200">Housing & Living</span>
                       <br /><br />
@@ -124,8 +125,8 @@ export function MetroCarousel({metro_details}: Props) {
                 
                 {/* Health Section */}
                 {metro.health && (
-                  <div className="bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
-                    <Heart className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0" />
+                  <div className="bg-neutral-800 p-4 md:p-14 rounded-3xl mb-4 flex items-start justify-center">
+                    <Heart className="text-neutral-400 w-8 h-8 mr-4 flex-shrink-0 hidden md:flex" />
                     <div className="text-neutral-400 text-base md:text-2xl font-sans max-w-3xl">
                       <span className="font-bold text-neutral-200">Health</span>
                       <br /><br />

@@ -254,7 +254,7 @@ export const Card = ({
             {card.title}
           </motion.p>
          
-          <div className="pt-10 px-28">{card.content}</div>
+          <div className="pt-10 px-2  lg:px-28">{card.content}</div>
         <motion.p className="text-sm mt-10 text-center  text-gray-400">
             Source: <a href={card.data_source} target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-300">DataUSA</a>
         </motion.p>

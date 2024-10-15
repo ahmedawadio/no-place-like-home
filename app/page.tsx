@@ -206,19 +206,17 @@ useEffect(() => {
           transition={{
             duration: 1,
           }}
-          className="div"
+          className=""
         >
 
       <div className="absolute w-full bottom-0 inset-x-0 h-80 bg-gradient-to-b  from-transparent to-black" />
-      <div className="flex flex-col items-center justify-center absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b  from-transparent to-black" >
-
-
+      <div className="flex flex-col items-center justify-center absolute w-full bottom-0 inset-x-0 h-60 bg-gradient-to-b  from-transparent to-black overflow-auto" >
              <Input setSubmittedInput={setSubmittedInput} setIsSubmitted={setIsSubmitted} setIsLoading={setIsLoading}/>
-
 
    
 </div>
 </motion.div>
+<div className="h-20 py-50 bg-black"></div>
 
 
 </>
