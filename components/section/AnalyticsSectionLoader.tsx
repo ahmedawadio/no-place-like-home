@@ -14,22 +14,34 @@ export default function AnalyticsSectionLoader({locationData}: Props) {
   const [isTimeout, setIsTimeout] = useState(false);
 
   const islocationDataLoading = !(!locationData || !locationData.initial_zipcode || !locationData.initial_zipcode.length)
+  const [showLoader, setShowLoader] = useState(false);
 
+
+  
   useEffect(() => {
+    // Delay showing the loader for 1 second
+    const loaderTimer = setTimeout(() => {
+      setShowLoader(true);
+    }, 1000); // 1 second
+
     // If location data is not available, start a timeout
     if (!islocationDataLoading) {
       const timer = setTimeout(() => {
         setIsTimeout(true);
       }, 10000); // 10 seconds
 
-      // Cleanup function to clear the timeout if the component unmounts or data becomes available
-      return () => clearTimeout(timer);
+      // Cleanup function to clear both timeouts if the component unmounts or data becomes available
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(loaderTimer);
+      };
     } else {
       setIsTimeout(false);
+      clearTimeout(loaderTimer); // Clear the loader delay timer if data is available
     }
   }, [locationData]);
 
-  if (!islocationDataLoading) {
+  if (!islocationDataLoading && showLoader) {
     return (
       <div className="bg-black h-screen w-screen flex items-center justify-center">
         <div className="flex items-center space-x-4" role="status">

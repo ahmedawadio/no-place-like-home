@@ -186,13 +186,16 @@ useEffect(() => {
     }}
     className="div"
   >
+    <div className='pb-4'>
+
 <a href="https://www.ahmedawad.io/" target="_blank">
 
-    <h2 className="  items-center justify-center bg-gradient-to-br  from-slate-200 to-slate-400 bg-clip-text  text-transparent text-center pb-4 text-7xl ">
+    <h2 className="  items-center justify-center bg-gradient-to-br  from-slate-200 to-slate-400 bg-clip-text  text-transparent text-center  text-7xl ">
       Nest ML
    
     </h2>
 </a>
+    </div>
 <Input setSubmittedInput={setSubmittedInput} setIsSubmitted={setIsSubmitted} setIsLoading={setIsLoading}/>
   </motion.div>
 
