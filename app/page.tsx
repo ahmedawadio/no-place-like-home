@@ -37,9 +37,9 @@ export default function Home() {
     {
       text: "Running Model",
     },
-    // {
-    //   text: "Analyzing Results",
-    // },
+    {
+      text: "Analyzing Results",
+    },
     {
       text: "Clicking Heels 3x",
     },
@@ -96,25 +96,30 @@ export default function Home() {
   }, [submittedInput]);
 
 
-  useEffect(() => {
-    
+
+  const constructNextImageUrl = (imageUri:string) => {
+    const encodedUrl = encodeURIComponent(imageUri);
+    return `/_next/image?url=${encodedUrl}&w=1080&q=75`;
+  };
+  
+useEffect(() => {
     const preloadImage = (src:any) => {
-      const link = document.createElement("link");
-      link.rel = "preload";
-      link.as = "image";
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
       link.href = src;
       document.head.appendChild(link);
     };
-  
-    if (locationData.metro_details) {
+
+    if (locationData?.metro_details) {
       locationData.metro_details.forEach((metro) => {
         if (metro.image_uri) {
-          preloadImage(metro.image_uri);
+          const optimizedImageUrl = constructNextImageUrl(metro.image_uri);
+          preloadImage(optimizedImageUrl);
         }
       });
     }
-  }, [locationData]);
-
+  }, [locationData])
   const isTest = false
 
   useEffect(() => {
