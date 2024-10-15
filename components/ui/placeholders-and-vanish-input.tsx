@@ -211,7 +211,7 @@ export function PlaceholdersAndVanishInput({
         type="number" 
 
         className={cn(
-          "w-full h-full text-base z-50 rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20 text-white bg-transparent",
+          "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full h-full text-base z-50 rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20 text-white bg-transparent",
           animating ? "text-transparent" : ""
         )}
         aria-invalid={error}
