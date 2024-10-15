@@ -1,27 +1,17 @@
 "use client"
-// // import { Globe } from '@/components/ui/globe'
 import { Input } from '@/components/Input';
-import { SpinningGlobe } from '@/components/SpinningGlobe';
-// // import { GlobeDemo } from '@/components/world';
 import { motion } from "framer-motion";
 import { BackgroundBeams } from '@/components/ui/background-beams';
-import { HeroTitle } from '@/components/HeroTitle';
-// // import { LoaderOverlay } from '@/components/LoaderOverlay';
 import { MultiStepLoader } from '@/components/ui/multi-step-loader';
 import { Header } from '@/components/ui/Header';
 import AnalyticsSection from '@/components/section/AnalyticsSection';
 import AnalyticsSectionLoader from '@/components/section/AnalyticsSectionLoader';
-
-
-// import{FaExclamationTriangle} from 'react-icons/fa'
 import { useEffect, useState } from 'react';
-import { LocationData, MetroDetail } from '@/types';
+import { LocationData } from '@/types';
 
-import UsaGlobe from '../components/UsaGlobeExport';
 
 export default function Home() {
 
-// return<div></div>
   const loadingStates = [
     {
       text: "Conencting to API",
@@ -152,7 +142,7 @@ useEffect(() => {
 
 {isSubmitted &&
 <div className="pt-2">
-<Header/>
+{/* <Header/> */}
 
 
 
@@ -173,6 +163,7 @@ useEffect(() => {
 </div>
 </div>
 }
+
 
 {!isSubmitted && 
       <div className="touch-pan-y flex flex-col items-center justify-center min-h-screen">

@@ -7,6 +7,7 @@ import { ListFilter, TrendingUpDown } from "lucide-react";
 import GraphSection from "./GraphSection";
 import { TracingBeam } from "../ui/tracing-beam";
 import { MetroCarousel } from "./MetroCarousel";
+import { Header } from "../ui/Header";
 
 interface Props {
   locationData: LocationData;
@@ -28,6 +29,8 @@ export default function AnalyticsSection({
 
   return (
     <div className="py-6 pb-20">
+      <Header/>
+
     <div className="bg-transparent pl-10  overflow-x-hidden  mt-20 w-full max-w-[calc(100%-40px)] mx-auto flex flex-col gap-6 justify-start overflow-y-clip ">
         <TracingBeam className="w-full mb-10">
       <div className="flex flex-col gap-6 items-start justify-start">
