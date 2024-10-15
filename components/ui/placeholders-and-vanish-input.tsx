@@ -183,7 +183,7 @@ export function PlaceholdersAndVanishInput({
     <form
       className={cn(
         "w-full relative max-w-xl mx-auto bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200",
-        value && "bg-gray-900",
+        value && "bg-zinc-900",
         error ? "border-2 border-red-500" : "border-2 border-transparent" // Added border here
       )}
       onSubmit={(e) => {
@@ -201,14 +201,16 @@ export function PlaceholdersAndVanishInput({
       <input
         onChange={(e) => {
           const inputValue = e.target.value;
-          if (!animating && /^\d*$/.test(inputValue) && inputValue.length <= 5) {
+          // Allow only digits (no letters, including "e")
+          if (!animating && /^[0-9]*$/.test(inputValue) && inputValue.length <= 5) {
             setValue(inputValue);
             onChange && onChange(e);
           }
         }}
         ref={inputRef}
         value={value}
-        type="number" 
+        // type="number" 
+        inputMode="numeric"
 
         className={cn(
           "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full h-full text-base z-50 rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20 text-white bg-transparent",

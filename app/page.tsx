@@ -16,11 +16,6 @@ import AnalyticsSectionLoader from '@/components/section/AnalyticsSectionLoader'
 // import{FaExclamationTriangle} from 'react-icons/fa'
 import { useEffect, useState } from 'react';
 import { LocationData, MetroDetail } from '@/types';
-import { World } from '@/components/ui/globe';
-import dynamic from 'next/dynamic';
-
-// need to make it ssr fasle because heavily realies on the window size
-// const UsaGlobe = dynamic(() => import('../components/UsaGlobeExport'), { ssr: false });
 
 import UsaGlobe from '../components/UsaGlobeExport';
 
@@ -154,12 +149,9 @@ useEffect(() => {
   
   <>
   
-      {/* <Header/> */}
-    <div className="pt-2">
 
 {isSubmitted &&
-
-<>
+<div className="pt-2">
 <Header/>
 
 
@@ -179,51 +171,45 @@ useEffect(() => {
 
 <MultiStepLoader loop={false} setIsLoading={setIsLoading} loadingStates={loadingStates} loading={isLoading}  duration={duration} />
 </div>
-</>
+</div>
 }
 
 {!isSubmitted && 
-<div className='touch-pan-y'>
+      <div className="touch-pan-y flex flex-col items-center justify-center min-h-screen">
 
 
 
 <BackgroundBeams />
-<Header/>
-<HeroTitle/>
 
- {/* <SpinningGlobe/>  */}
-
-<UsaGlobe/>
 <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 1,
-          }}
-          className=""
-        >
+    initial={{
+      opacity: 0,
+      y: 20,
+    }}
+    animate={{
+      opacity: 1,
+      y: 0,
+    }}
+    transition={{
+      duration: 1,
+    }}
+    className="div"
+  >
+<a href="https://www.ahmedawad.io/" target="_blank">
 
-      <div className="absolute w-full bottom-0 inset-x-0 h-80 bg-gradient-to-b  from-transparent to-black" />
-      <div className="flex pb-20 md:pb-0 flex-col items-center justify-center absolute w-full bottom-0 inset-x-0 h-60 bg-gradient-to-b  from-transparent to-black overflow-auto" >
-             <Input setSubmittedInput={setSubmittedInput} setIsSubmitted={setIsSubmitted} setIsLoading={setIsLoading}/>
-
+    <h2 className="  items-center justify-center bg-gradient-to-br  from-slate-200 to-slate-400 bg-clip-text  text-transparent text-center pb-4 text-7xl ">
+      Nest ML
    
-</div>
-</motion.div>
-<div className="h-20 py-50 bg-black"></div>
+    </h2>
+</a>
+<Input setSubmittedInput={setSubmittedInput} setIsSubmitted={setIsSubmitted} setIsLoading={setIsLoading}/>
+  </motion.div>
 
-
 </div>
+
 }
 
 
-  </div>
 </>
 
    
