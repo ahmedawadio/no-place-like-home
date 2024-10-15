@@ -76,7 +76,7 @@ export default function AnalyticsSection({
           Key Variables Used in the Analysis
         </h2>
         <p className="leading-7 [&:not(:first-child)]:mt-6">
-        The analysis leveraged K-means clustering and nearest neighbors on thousands of features derived from five years of data. Presented below are the primary variables selected by Random Forest for their substantial variance and effectiveness in dimensionality reduction.           </p>
+        The analysis leveraged K-means clustering and nearest neighbors on thousands of features derived from four years of data. Presented below are the primary variables selected by Random Forest for their substantial variance and effectiveness in dimensionality reduction.           </p>
         <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
           {locationData.variables.slice(0, 5).map((variable) => (
             <li key={variable.variable_code}>
