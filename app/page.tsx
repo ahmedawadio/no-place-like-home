@@ -97,11 +97,19 @@ export default function Home() {
 
 
 
-  const constructNextImageUrl = (imageUri:string) => {
+  const constructNextImageUrl = (imageUri:string,width:number) => {
     const encodedUrl = encodeURIComponent(imageUri);
-    return `/_next/image?url=${encodedUrl}&w=1080&q=75`;
+    return `/_next/image?url=${encodedUrl}&w=${width}&q=75`;
+    
   };
-  
+  // instead of paying for a cdn, doing a cheap hack to preload a bunch of images.
+  const imageSizes = [
+    { width: 2048 },  // Extra large image size
+    { width: 1200 },  // Medium image size
+    { width: 1920 },  // Large image size
+    { width: 640 },   // Small image size
+    { width: 3840 },  // 4K resolution image size
+  ];
 useEffect(() => {
     const preloadImage = (src:any) => {
       const link = document.createElement('link');
@@ -114,12 +122,20 @@ useEffect(() => {
     if (locationData?.metro_details) {
       locationData.metro_details.forEach((metro) => {
         if (metro.image_uri) {
-          const optimizedImageUrl = constructNextImageUrl(metro.image_uri);
-          preloadImage(optimizedImageUrl);
+          imageSizes.forEach((size) => {
+            const imageUrl = constructNextImageUrl(
+              metro.image_uri,
+              size.width,
+            );
+            preloadImage(imageUrl);
+          });
         }
       });
     }
   }, [locationData])
+
+
+
   const isTest = false
 
   useEffect(() => {
