@@ -105,7 +105,8 @@ export default function Home() {
   // instead of paying for a cdn, doing a cheap hack to preload a bunch of images.
   const imageSizes = [
     { width: 2048 },  // Extra large image size
-    { width: 1200 },  // Medium image size
+    { width: 1200 },  // Medium image size    
+    { width: 1080 },  // Medium image size
     { width: 1920 },  // Large image size
     { width: 640 },   // Small image size
     { width: 3840 },  // 4K resolution image size
