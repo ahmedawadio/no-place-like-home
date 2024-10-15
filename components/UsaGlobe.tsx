@@ -627,16 +627,14 @@ export default function UsaGlobe() {
   return (
     // <div className=" items-center justify-center   ">
  
-    <div className="w-full min-h-screen   flex flex-col items-center justify-center">       
-        
-        <div className="w-full h-[40vh] sm:h-[50vh] lg:h-[70vh] flex items-center justify-center">
-            
+<div className="w-full min-h-screen flex flex-col items-center justify-center touch-pan-y">
+  <div className="w-full  h-[30vh] sm:h-[50vh] lg:h-[70vh] flex items-center justify-center relative">
+    {/* <div className="absolute inset-y-1/3 w-full flex items-center justify-center"> */}
       <World data={sampleArcs} globeConfig={globeConfig} />
+    {/* </div> */}
+  </div>
+</div>
 
-  
-    </div>
-
-            </div>
     // </div>
   );
 }
@@ -903,6 +901,7 @@ function World(props: WorldProps) {
   return (
     <Canvas 
       camera={{ position: [0, 0, cameraZ], fov: 45, near: 180, far: 1800 }}
+      // className="pb-20"
     >
       <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
       <directionalLight
@@ -920,9 +919,9 @@ function World(props: WorldProps) {
       />
       <Globe {...props} />
       <OrbitControls
-        enablePan={true}
-        enableZoom={true}
-        enableRotate={true} 
+        enablePan={false}
+        enableZoom={false}
+        enableRotate={false} 
         autoRotate={true}
         minDistance={cameraZ}
         maxDistance={cameraZ}

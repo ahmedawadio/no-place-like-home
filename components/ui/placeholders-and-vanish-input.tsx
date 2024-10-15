@@ -208,12 +208,11 @@ export function PlaceholdersAndVanishInput({
         }}
         ref={inputRef}
         value={value}
-        // type="number" // Uncomment if numeric input is desired
+        type="number" 
 
         className={cn(
-          "w-full h-full text-sm sm:text-base z-50 rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20 text-white bg-transparent",
+          "w-full h-full text-base z-50 rounded-full focus:outline-none focus:ring-0 pl-4 sm:pl-10 pr-20 text-white bg-transparent",
           animating ? "text-transparent" : ""
-          // Removed border classes from input
         )}
         aria-invalid={error}
         aria-describedby={error ? "zipcode-error" : undefined}
