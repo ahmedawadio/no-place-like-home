@@ -948,7 +948,7 @@ I will choose the year right before the big drop. I chosse 2019-2023(most recent
 #                 prompt = f"Make me a single pastel paintbrush-style depiction of the quintessential downtown of: {name}. Do not include text or a paintbrush."
 #                 print(f"Row {index}/{total_locations}:, mid:{mid}, name: {name}")
 
-#                 image_path = os.path.join(output_dir, f"{mid}.png")
+#                 image_path = os.path.join(output_dir, f"{mid}.webp")
 
 #                 # Check if the image already exists, if so, skip
 #                 if os.path.exists(image_path):

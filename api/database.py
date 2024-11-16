@@ -117,7 +117,7 @@ def get_location(zipcode):
 def get_image(mid: str):
     try:
         # Define the path in Supabase storage
-        path_on_supabase = f"{mid}.png"
+        path_on_supabase = f"{mid}.webp"
 
         # Download the file from Supabase
         response = supabase.storage.from_("metros").download(path_on_supabase)

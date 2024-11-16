@@ -26,8 +26,9 @@ def upload_images_to_supabase(
             # Loop through each row and get 'mid'
             for index, row in df.iterrows():
                 mid = row['mid']
-                image_path = os.path.join(image_dir, f"{mid}.png")
-                path_on_supabase = f"{mid}.png"
+                image_path = os.path.join(image_dir, f"{mid}.webp")
+                # hi
+                path_on_supabase = f"{mid}.webp"
                 
                 # Check if the image file exists locally
                 if os.path.isfile(image_path):
@@ -70,7 +71,7 @@ def upload_images_to_supabase(
 def get_image(mid: str):
     try:
         # Define the path in Supabase storage
-        path_on_supabase = f"{mid}.png"
+        path_on_supabase = f"{mid}.webp"
 
         # Download the file from Supabase
         response = supabase.storage.from_("metros").download(path_on_supabase)

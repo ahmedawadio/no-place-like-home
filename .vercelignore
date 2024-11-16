@@ -1,6 +1,7 @@
 # Exclude all CSV and PNG files
 *.csv
 *.png
+*.webp
 
 # Exclude the entire analysis folder
 analysis/
